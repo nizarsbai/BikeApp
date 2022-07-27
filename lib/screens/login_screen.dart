@@ -1,9 +1,9 @@
-
-import 'dart:ui';
-
 import 'package:auth_bikeapp/screens/home_screen.dart';
 import 'package:auth_bikeapp/screens/registration_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -20,6 +20,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
 
+  //firebase
+  final _auth = FirebaseAuth.instance;
+
+  // string for displaying the error Message
+  String? errorMessage;
+
   @override
   Widget build(BuildContext context) {
     //email field
@@ -27,6 +33,18 @@ class _LoginScreenState extends State<LoginScreen> {
       autofocus: false,
       controller: emailController,
       keyboardType: TextInputType.emailAddress,
+      validator: (value)
+      {
+        if(value!.isEmpty)
+        {
+          return("Veuillez saisir votre e-mail !");
+        }
+        if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value))
+        {
+          return ("Veuillez saisir un email valid ! ");
+        }
+        return null;
+      },
       //validator: () {},
       onSaved: (value)
         {
@@ -48,7 +66,15 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: passwordController,
       obscureText: true,
 
-      //validator: ,
+      validator: (value){
+        RegExp regex = new RegExp(r'^.{6,}$');
+        if(value!.isEmpty) {
+          return ("Mot de passe est obligatoire !");
+        }
+        if(!regex.hasMatch(value)){
+          return("Veuillez saisir un mot de passe valide (Min. 6 caractère) ");
+        }
+      },
       onSaved: (value)
       {
         passwordController.text=value!;
@@ -73,69 +99,122 @@ class _LoginScreenState extends State<LoginScreen> {
         minWidth: MediaQuery.of(context).size.width,
 
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+          signIn(emailController.text, passwordController.text);
+          
         },
         child: Text("Login", textAlign: TextAlign.center,
         style: TextStyle(fontSize: 20, color: Colors.white,
         fontWeight: FontWeight.bold),
         )),
     );
+
+  
+
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: SingleChildScrollView(
-          child:Container(
-           color: Colors.white,
-           child: Padding(
-            padding: const EdgeInsets.all(36.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                height: 200,
-                child: Image.asset(
-                    "assets/bikeAppLogo.png",
-                    fit: BoxFit.contain,
-                )),
-                SizedBox(height: 45),
-                emailField,
-                SizedBox(height: 25),
-                passwordField,
-                SizedBox(height: 35),
-                loginButton,
-                SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Vous n'avez pas de compte? "),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context)=>
-                                    RegistrationScreen()));
-                      },
-                      child: Text(
-                        "S'enregistrer",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    ),
-                    )
-                  ])
+      body: SingleChildScrollView(
+        child:Container(
+         color: Colors.white,
+         child: Padding(
+          padding: const EdgeInsets.all(36.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+              height: 200,
+              child: Image.asset(
+                  "assets/bikeAppLogo.png",
+                  fit: BoxFit.contain,
+              )),
+              SizedBox(height: 45),
+              emailField,
+              SizedBox(height: 25),
+              passwordField,
+              SizedBox(height: 35),
+              loginButton,
+              SignInButton(Buttons.Google, onPressed: () {
 
-              ],
-            ),
+            }),
+            SignInButton(Buttons.Facebook, onPressed: () {
+
+            }),
+            SignInButton(Buttons.Apple, onPressed: () {
+
+            }),
+              SizedBox(height: 15),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Vous n'avez pas de compte? "),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context)=>
+                                  RegistrationScreen()));
+                    },
+                    child: Text(
+                      "S'enregistrer",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15),
+                  ),
+                  )
+                ])
+
+            ],
           ),
-          ),
+        ),
         ),
       ),
       ),
     );
+  }
+
+  // login function
+  void signIn(String email, String password) async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        await _auth
+            .signInWithEmailAndPassword(email: email, password: password)
+            .then((uid) => {
+                  Fluttertoast.showToast(msg: "Login Successful"),
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => HomeScreen())),
+                });
+      } on FirebaseAuthException catch (error) {
+        switch (error.code) {
+          case "invalid-email":
+            errorMessage = "Your email address appears to be malformed.";
+
+            break;
+          case "wrong-password":
+            errorMessage = "Your password is wrong.";
+            break;
+          case "user-not-found":
+            errorMessage = "User with this email doesn't exist.";
+            break;
+          case "user-disabled":
+            errorMessage = "User with this email has been disabled.";
+            break;
+          case "too-many-requests":
+            errorMessage = "Too many requests";
+            break;
+          case "operation-not-allowed":
+            errorMessage = "Signing in with Email and Password is not enabled.";
+            break;
+          default:
+            errorMessage = "An undefined Error happened.";
+        }
+        Fluttertoast.showToast(msg: errorMessage!);
+        print(error.code);
+      }
+    }
   }
 }
