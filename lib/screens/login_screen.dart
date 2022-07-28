@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -13,6 +14,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+
+  bool _obscureText=true;
   // form key
   final _formKey = GlobalKey<FormState>();
 
@@ -45,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
         return null;
       },
-      //validator: () {},
+      
       onSaved: (value)
         {
           emailController.text=value!;
@@ -64,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final passwordField=TextFormField(
       autofocus: false,
       controller: passwordController,
-      obscureText: true,
+      obscureText: _obscureText,
 
       validator: (value){
         RegExp regex = new RegExp(r'^.{6,}$');
@@ -72,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
           return ("Mot de passe est obligatoire !");
         }
         if(!regex.hasMatch(value)){
-          return("Veuillez saisir un mot de passe valide (Min. 6 caractère) ");
+          return("Veuillez saisir un mot de passe valide (Min. 6 caractères) ");
         }
       },
       onSaved: (value)
@@ -82,6 +86,16 @@ class _LoginScreenState extends State<LoginScreen> {
       textInputAction: TextInputAction.done,
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.vpn_key),
+            suffixIcon: GestureDetector(
+              onTap: (){
+                setState(() {
+                  _obscureText=!_obscureText;
+                });
+            },
+            child: Icon(_obscureText
+             ? Icons.visibility
+             : Icons.visibility_off),
+             ),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
             hintText: "Password",
             border: OutlineInputBorder(
@@ -135,15 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
               passwordField,
               SizedBox(height: 35),
               loginButton,
-              SignInButton(Buttons.Google, onPressed: () {
 
-            }),
-            SignInButton(Buttons.Facebook, onPressed: () {
-
-            }),
-            SignInButton(Buttons.Apple, onPressed: () {
-
-            }),
               SizedBox(height: 15),
 
               Row(
@@ -166,7 +172,29 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontSize: 15),
                   ),
                   )
-                ])
+                ]),
+
+              SizedBox(height: 15),
+              
+              Text("OR", textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 15, color: Colors.grey,
+                fontWeight: FontWeight.bold)),
+              
+              SizedBox(height: 15),
+                
+
+                SignInButton(Buttons.Google, onPressed: () async {
+                  await _googleSignIn.signIn();
+              setState(() {});
+
+            }),
+            SignInButton(Buttons.Facebook, onPressed: (){
+              
+
+            }),
+            SignInButton(Buttons.Apple, onPressed: () {
+
+            }),
 
             ],
           ),
