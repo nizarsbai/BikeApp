@@ -1,4 +1,11 @@
+import 'dart:math';
+
+import 'package:auth_bikeapp/model/user_model.dart';
+import 'package:auth_bikeapp/screens/home_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -8,6 +15,10 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  
+  bool _obscureText=true;
+
+  final _auth = FirebaseAuth.instance;
   // our form key
   final _formKey=GlobalKey<FormState>();
   //editing Controller
@@ -25,7 +36,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         autofocus: false,
         controller: firstNameEditingController,
         keyboardType: TextInputType.name,
-        //validator: () {},
+        
+      validator: (value){
+        RegExp regex = new RegExp(r'^.{3,}$');
+        if(value!.isEmpty) {
+          return ("Veuillez saisir votre Nom ");
+        }
+        if(!regex.hasMatch(value)){
+          return("Veuillez saisir un Nom valide (Min. 3 caractères) ");
+        }
+        return null;
+      },
+
         onSaved: (value)
         {
           firstNameEditingController.text=value!;
@@ -45,7 +67,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         autofocus: false,
         controller: secondNameEditingController,
         keyboardType: TextInputType.name,
-        //validator: () {},
+        validator: (value){
+        RegExp regex = new RegExp(r'^.{3,}$');
+        if(value!.isEmpty) {
+          return ("Veuillez saisir votre Prénom ");
+        }
+        if(!regex.hasMatch(value)){
+          return("Veuillez saisir un prénom valide (Min. 3 caractères) ");
+        }
+      },
         onSaved: (value)
         {
           secondNameEditingController.text=value!;
@@ -65,7 +95,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         autofocus: false,
         controller: emailEditingController,
         keyboardType: TextInputType.emailAddress,
-        //validator: () {},
+        validator: (value)
+      {
+        if(value!.isEmpty)
+        {
+          return("Veuillez saisir votre e-mail !");
+        }
+        if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value))
+        {
+          return ("Veuillez saisir un email valid ! ");
+        }
+        return null;
+      },
         onSaved: (value)
         {
           emailEditingController.text=value!;
@@ -73,6 +114,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.mail),
+          
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
@@ -84,8 +126,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     final passwordField=TextFormField(
         autofocus: false,
         controller: passwordEditingController,
-        obscureText: true,
-        //validator: () {},
+        obscureText: _obscureText,
+        validator: (value){
+        RegExp regex = new RegExp(r'^.{6,}$');
+        if(value!.isEmpty) {
+          return ("Mot de passe est obligatoire !");
+        }
+        if(!regex.hasMatch(value)){
+          return("Veuillez saisir un mot de passe valide (Min. 6 caractères) ");
+        }
+      },
         onSaved: (value)
         {
           firstNameEditingController.text=value!;
@@ -93,6 +143,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.vpn_key),
+          suffixIcon: GestureDetector(
+              onTap: (){
+                setState(() {
+                  _obscureText=!_obscureText;
+                });
+            },
+            child: Icon(_obscureText
+             ? Icons.visibility
+             : Icons.visibility_off),
+             ),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Mot de passe",
           border: OutlineInputBorder(
@@ -104,8 +164,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     final confirmPasswordField=TextFormField(
         autofocus: false,
         controller: confirmPasswordEditingController,
-        obscureText: true,
-        //validator: () {},
+        obscureText: _obscureText,
+
+        validator: (value)
+        {
+          if(confirmPasswordEditingController.text !=
+           passwordEditingController.text)
+          {
+            return "Ces mots de passe ne correspondent pas. Veuillez réessayer.";
+          }
+          return null;
+        } ,
         onSaved: (value)
         {
           confirmPasswordEditingController.text=value!;
@@ -113,6 +182,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.vpn_key),
+          suffixIcon: GestureDetector(
+              onTap: (){
+                setState(() {
+                  _obscureText=!_obscureText;
+                });
+            },
+            child: Icon(_obscureText
+             ? Icons.visibility
+             : Icons.visibility_off),
+             ),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Confirmer le mot de passe",
           border: OutlineInputBorder(
@@ -129,7 +208,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           minWidth: MediaQuery.of(context).size.width,
 
-          onPressed: () {},
+          onPressed: () {
+            signUp(emailEditingController.text, passwordEditingController.text);
+          },
           child: Text("S'enregistrer", textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20, color: Colors.white,
                 fontWeight: FontWeight.bold),
@@ -192,5 +273,49 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         ),
       ),
     );
+  }
+
+  void signUp(String email, String password) async
+  {
+    if(_formKey.currentState!.validate())
+    {
+        await _auth.createUserWithEmailAndPassword(email: email, password: password)
+        .then((value) => {
+          postDetailsToFirestore()
+          
+        }).catchError((e)
+        {
+          Fluttertoast.showToast(msg: e!.message);
+        });
+    }
+  }
+
+  postDetailsToFirestore() async{
+    //calling our firestore
+    //calling our user model
+    //sending these values
+
+    FirebaseFirestore firebaseFirestore=FirebaseFirestore.instance;
+    User? user = _auth.currentUser;
+
+    UserModel userModel=UserModel();
+
+    // writing all the values
+    userModel.email = user!.email;
+    userModel.uid = user.uid;
+    userModel.firstName = firstNameEditingController.text;
+    userModel.lastName = secondNameEditingController.text;
+
+    await firebaseFirestore
+        .collection("users")
+        .doc(user.uid)
+        .set(userModel.toMap());
+    Fluttertoast.showToast(msg: "Compte créé avec succès. :) ");
+
+     Navigator.pushAndRemoveUntil(
+        (context),
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+        (route) => false);
+
   }
 }
