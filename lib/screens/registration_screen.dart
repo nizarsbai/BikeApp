@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -208,8 +209,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           minWidth: MediaQuery.of(context).size.width,
 
-          onPressed: () {
+          onPressed: () /*async*/ {
             signUp(emailEditingController.text, passwordEditingController.text);
+            /*final GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
+                  await googleSignIn.signOut();
+                  await FirebaseAuth.instance.signOut();
+                  */
           },
           child: Text("S'enregistrer", textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20, color: Colors.white,

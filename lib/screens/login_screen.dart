@@ -1,3 +1,4 @@
+import 'package:auth_bikeapp/main.dart';
 import 'package:auth_bikeapp/screens/home_screen.dart';
 import 'package:auth_bikeapp/screens/registration_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,6 +33,8 @@ GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   @override
   Widget build(BuildContext context) {
+    GoogleSignInAccount? user =_googleSignIn.currentUser;
+
     //email field
     final emailField=TextFormField(
       autofocus: false,
@@ -185,6 +188,12 @@ GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
                 SignInButton(Buttons.Google, onPressed: () async {
                   await _googleSignIn.signIn();
+                  
+                  
+                if(user != null) {
+                  // ignore: use_build_context_synchronously
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistrationScreen()));
+                }
               setState(() {});
 
             }),
