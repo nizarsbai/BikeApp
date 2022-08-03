@@ -20,14 +20,14 @@ class _ProfileState extends State<Profile> {
         child: Center(
           child: Column(
             children: [
-              CircleAvatar(
-                radius: 40,
-                backgroundImage: NetworkImage(user.photoURL!),
-              ),
+              // CircleAvatar(
+              //   radius: 40,
+              //   //backgroundImage: NetworkImage(user.photoURL!),
+              // ),
               const SizedBox(height: 15,),
-              Text(user.displayName!),
+              //Text(user.displayName!),
               const SizedBox(height: 5,),
-              Text(user.email!),
+              //Text(user.email!),
               ElevatedButton(
                 onPressed: () async {
                   final GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);

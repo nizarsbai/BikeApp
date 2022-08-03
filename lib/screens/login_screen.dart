@@ -1,11 +1,22 @@
 import 'package:auth_bikeapp/main.dart';
+import 'package:auth_bikeapp/screens/forgot_password.dart';
 import 'package:auth_bikeapp/screens/home_screen.dart';
+import 'package:auth_bikeapp/screens/myApp.dart';
 import 'package:auth_bikeapp/screens/registration_screen.dart';
+import 'package:auth_bikeapp/utils/next_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/internet_provider.dart';
+import '../provider/sign_in_provider.dart';
+import '../utils/snack_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -16,6 +27,16 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+
+final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
+  // final RoundedLoadingButtonController googleController =
+  //     RoundedLoadingButtonController();
+  // final RoundedLoadingButtonController facebookController =
+  //     RoundedLoadingButtonController();
+  // final RoundedLoadingButtonController twitterController =
+  //     RoundedLoadingButtonController();
+  // final RoundedLoadingButtonController phoneController =
+  //     RoundedLoadingButtonController();
 
   bool _obscureText=true;
   // form key
@@ -167,6 +188,8 @@ GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
                               builder: (context)=>
                                   RegistrationScreen()));
                     },
+                    
+
                     child: Text(
                       "S'enregistrer",
                     style: TextStyle(
@@ -176,6 +199,64 @@ GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
                   ),
                   )
                 ]),
+
+                Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+
+                  // Button facebook
+              //    Column(
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              // children: [
+              //   const SizedBox(
+              //     height: 10,
+              //   ),
+                // facebook login button
+                // RoundedLoadingButton(
+                //   onPressed: () {
+                //     handleFacebookAuth();
+                //   },
+                //   //controller: facebookController,
+                //   successColor: Colors.blue,
+                //   width: MediaQuery.of(context).size.width * 0.80,
+                //   elevation: 0,
+                //   borderRadius: 25,
+                //   color: Colors.blue,
+                //   child: Wrap(
+                //     children: const [
+                //       Icon(
+                //         FontAwesomeIcons.facebook,
+                //         size: 20,
+                //         color: Colors.white,
+                //       ),
+                //       SizedBox(
+                //         width: 15,
+                //       ),
+                //       Text("Sign in with Facebook",
+                //           style: TextStyle(
+                //               color: Colors.white,
+                //               fontSize: 15,
+                //               fontWeight: FontWeight.w500)),
+                //     ],
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+
+                
+            //   ],
+            // ),
+
+
+                  TextButton(onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()));
+                  }, child: const Text("Forgot password?")),
+                ],
+              ),
+
+              
 
               SizedBox(height: 15),
               
@@ -192,15 +273,16 @@ GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
                   
                 if(user != null) {
                   // ignore: use_build_context_synchronously
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistrationScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
                 }
               setState(() {});
 
             }),
             SignInButton(Buttons.Facebook, onPressed: (){
+              //handleFacebookAuth();
               
-
             }),
+            
             SignInButton(Buttons.Apple, onPressed: () {
 
             }),
@@ -209,9 +291,62 @@ GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
           ),
         ),
         ),
+
+        
       ),
-      ),
+      )
+
+          
+        
     );
+    
+  }
+
+  //handling Facebookauth
+  Future handleFacebookAuth() async {
+    final sp = context.read<SignInProvider>();
+    final ip = context.read<InternetProvider>();
+    await ip.checkInternetConnection();
+
+    if (ip.hasInternet == false) {
+      openSnackbar(context, "Check your Internet connection", Colors.red);
+      //facebookController.reset();
+    } else {
+      await sp.signInWithFacebook().then((value) {
+        if (sp.hasError == true) {
+          openSnackbar(context, sp.errorCode.toString(), Colors.red);
+          //facebookController.reset();
+        } else {
+          // checking whether user exists or not
+          sp.checkUserExists().then((value) async {
+            if (value == true) {
+              // user exists
+              await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
+                  .saveDataToSharedPreferences()
+                  .then((value) => sp.setSignIn().then((value) {
+                        //facebookController.success();
+                        handleAfterSignIn();
+                      })));
+            } else {
+              // user does not exist
+              sp.saveDataToFirestore().then((value) => sp
+                  .saveDataToSharedPreferences()
+                  .then((value) => sp.setSignIn().then((value) {
+                        //facebookController.success();
+                        handleAfterSignIn();
+                      })));
+            }
+          });
+        }
+      });
+    }
+  }
+
+  // handle after signin
+  handleAfterSignIn() {
+    Future.delayed(const Duration(milliseconds: 1000)).then((value) {
+      nextScreenReplace(context, const HomeScreen());
+    });
   }
 
   // login function
@@ -223,7 +358,7 @@ GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => HomeScreen())),
+                      MaterialPageRoute(builder: (context) => MainPage())),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {

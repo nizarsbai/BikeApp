@@ -6,14 +6,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MainPageState extends State<MainPage> {
   final user = FirebaseAuth.instance.currentUser;
 
   // Bottom navigation bar
@@ -32,13 +32,13 @@ class _MyAppState extends State<MyApp> {
       drawer: Drawer(
         child: ListView(
           children: [
-            UserAccountsDrawerHeader(
-              accountName: Text(user!.displayName!), 
-              accountEmail: Text(user!.email!),
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(user!.photoURL!),
-              ),
-            ),
+            //   UserAccountsDrawerHeader(
+            //     accountName: Text(user!.displayName!), 
+            //     accountEmail: Text(user!.email!),
+            //     currentAccountPicture: CircleAvatar(
+            //     backgroundImage: NetworkImage(user!.photoURL!),
+            // ),
+              //),
             ListTile(
               leading: const Icon(Icons.edit),
               trailing: const Icon(Icons.keyboard_arrow_right),

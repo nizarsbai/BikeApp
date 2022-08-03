@@ -211,10 +211,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
           onPressed: () /*async*/ {
             signUp(emailEditingController.text, passwordEditingController.text);
-            /*final GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
-                  await googleSignIn.signOut();
-                  await FirebaseAuth.instance.signOut();
-                  */
+            // final GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
+            //       await googleSignIn.signOut();
+            //       await FirebaseAuth.instance.signOut();
+                  
           },
           child: Text("S'enregistrer", textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20, color: Colors.white,
