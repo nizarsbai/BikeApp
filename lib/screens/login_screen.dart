@@ -29,10 +29,10 @@ class _LoginScreenState extends State<LoginScreen> {
 GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
 final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
-  // final RoundedLoadingButtonController googleController =
-  //     RoundedLoadingButtonController();
-  // final RoundedLoadingButtonController facebookController =
-  //     RoundedLoadingButtonController();
+   final RoundedLoadingButtonController googleController =
+       RoundedLoadingButtonController();
+   final RoundedLoadingButtonController facebookController =
+       RoundedLoadingButtonController();
   // final RoundedLoadingButtonController twitterController =
   //     RoundedLoadingButtonController();
   // final RoundedLoadingButtonController phoneController =
@@ -205,49 +205,49 @@ final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
                 children: [
 
                   // Button facebook
-              //    Column(
-              // crossAxisAlignment: CrossAxisAlignment.center,
-              // mainAxisAlignment: MainAxisAlignment.center,
-              // children: [
-              //   const SizedBox(
-              //     height: 10,
-              //   ),
-                // facebook login button
-                // RoundedLoadingButton(
-                //   onPressed: () {
-                //     handleFacebookAuth();
-                //   },
-                //   //controller: facebookController,
-                //   successColor: Colors.blue,
-                //   width: MediaQuery.of(context).size.width * 0.80,
-                //   elevation: 0,
-                //   borderRadius: 25,
-                //   color: Colors.blue,
-                //   child: Wrap(
-                //     children: const [
-                //       Icon(
-                //         FontAwesomeIcons.facebook,
-                //         size: 20,
-                //         color: Colors.white,
-                //       ),
-                //       SizedBox(
-                //         width: 15,
-                //       ),
-                //       Text("Sign in with Facebook",
-                //           style: TextStyle(
-                //               color: Colors.white,
-                //               fontSize: 15,
-                //               fontWeight: FontWeight.w500)),
-                //     ],
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 10,
-                // ),
+                  Column(
+               crossAxisAlignment: CrossAxisAlignment.center,
+               mainAxisAlignment: MainAxisAlignment.center,
+               children: [
+                 const SizedBox(
+                  height: 10,
+                 ),
+                 //facebook login button
+                 RoundedLoadingButton(
+                   onPressed: () {
+                     handleFacebookAuth();
+                   },
+                   controller: facebookController,
+                   successColor: Colors.blue,
+                   width: MediaQuery.of(context).size.width * 0.80,
+                   elevation: 0,
+                   borderRadius: 25,
+                   color: Colors.blue,
+                   child: Wrap(
+                     children: const [
+                      Icon(
+                       FontAwesomeIcons.facebook,
+                         size: 20,
+                         color: Colors.white,
+                       ),
+                       SizedBox(
+                         width: 15,
+                       ),
+                       Text("Sign in with Facebook",
+                           style: TextStyle(
+                               color: Colors.white,
+                               fontSize: 15,
+                              fontWeight: FontWeight.w500)),
+                     ],
+                      ),
+                 ),
+                 const SizedBox(
+                   height: 10,
+                 ),
 
                 
-            //   ],
-            // ),
+               ],
+               ),
 
 
                   TextButton(onPressed: () {
@@ -303,44 +303,44 @@ final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
   }
 
   //handling Facebookauth
-  Future handleFacebookAuth() async {
-    final sp = context.read<SignInProvider>();
-    final ip = context.read<InternetProvider>();
-    await ip.checkInternetConnection();
+   Future handleFacebookAuth() async {
+     final sp = context.read<SignInProvider>();
+     final ip = context.read<InternetProvider>();
+     await ip.checkInternetConnection();
 
-    if (ip.hasInternet == false) {
+     if (ip.hasInternet == false) {
       openSnackbar(context, "Check your Internet connection", Colors.red);
-      //facebookController.reset();
-    } else {
-      await sp.signInWithFacebook().then((value) {
-        if (sp.hasError == true) {
-          openSnackbar(context, sp.errorCode.toString(), Colors.red);
-          //facebookController.reset();
-        } else {
+       //facebookController.reset();
+     } else {
+       await sp.signInWithFacebook().then((value) {
+         if (sp.hasError == true) {
+           openSnackbar(context, sp.errorCode.toString(), Colors.red);
+           facebookController.reset();
+         } else {
           // checking whether user exists or not
           sp.checkUserExists().then((value) async {
-            if (value == true) {
-              // user exists
-              await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
-                  .saveDataToSharedPreferences()
-                  .then((value) => sp.setSignIn().then((value) {
-                        //facebookController.success();
+           if (value == true) {
+               // user exists
+               await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
+                   .saveDataToSharedPreferences()
+                   .then((value) => sp.setSignIn().then((value) {
+                         //facebookController.success();
                         handleAfterSignIn();
-                      })));
-            } else {
-              // user does not exist
-              sp.saveDataToFirestore().then((value) => sp
-                  .saveDataToSharedPreferences()
-                  .then((value) => sp.setSignIn().then((value) {
+                       })));
+             } else {
+               // user does not exist
+               sp.saveDataToFirestore().then((value) => sp
+                   .saveDataToSharedPreferences()
+                   .then((value) => sp.setSignIn().then((value) {
                         //facebookController.success();
-                        handleAfterSignIn();
-                      })));
-            }
-          });
-        }
-      });
-    }
-  }
+                         handleAfterSignIn();
+                       })));
+             }
+           });
+         }
+       });
+     }
+   }
 
   // handle after signin
   handleAfterSignIn() {
