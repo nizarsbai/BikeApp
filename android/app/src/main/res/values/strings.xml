@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resource>
-    <string name="app_name"> FlutterAuth </string>
-    <string name="facebook_app_id">1234</string>
+    <string name="app_name"> BlocAuth </string>
+    <string name="facebook_app_id">470108744892883</string>
     <string name="fb_login_protocol_scheme">fb1234</string>
-    <string name="facebook_client_token">56789</string>
+    <string name="facebook_client_token">df8946528bdf9781797b10786986989b</string>
     
 </resource>

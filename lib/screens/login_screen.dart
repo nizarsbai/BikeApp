@@ -2,6 +2,7 @@ import 'package:auth_bikeapp/main.dart';
 import 'package:auth_bikeapp/screens/forgot_password.dart';
 import 'package:auth_bikeapp/screens/home_screen.dart';
 import 'package:auth_bikeapp/screens/myApp.dart';
+import 'package:auth_bikeapp/screens/phoneauth_screen.dart';
 import 'package:auth_bikeapp/screens/registration_screen.dart';
 import 'package:auth_bikeapp/utils/next_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
+import 'package:auth_bikeapp/provider/sign_in_provider.dart';
 import '../provider/internet_provider.dart';
 import '../provider/sign_in_provider.dart';
 import '../utils/snack_bar.dart';
@@ -22,7 +24,7 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -35,8 +37,8 @@ final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
        RoundedLoadingButtonController();
   // final RoundedLoadingButtonController twitterController =
   //     RoundedLoadingButtonController();
-  // final RoundedLoadingButtonController phoneController =
-  //     RoundedLoadingButtonController();
+   final RoundedLoadingButtonController phoneController =
+       RoundedLoadingButtonController();
 
   bool _obscureText=true;
   // form key
@@ -204,14 +206,63 @@ final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
 
-                  // Button facebook
-                  Column(
+                  
+
+
+                  TextButton(onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()));
+                  }, child: const Text("Forgot password?")),
+                ],
+              ),
+
+              SizedBox(height: 15),
+              
+              Text("OR", textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 15, color: Colors.grey,
+                fontWeight: FontWeight.bold)),
+              
+              SizedBox(height: 15),
+
+               Column(
                crossAxisAlignment: CrossAxisAlignment.center,
                mainAxisAlignment: MainAxisAlignment.center,
                children: [
                  const SizedBox(
                   height: 10,
                  ),
+
+                  RoundedLoadingButton(
+                  onPressed: () {
+                    handleGoogleSignIn();
+                  },
+                  controller: googleController,
+                  successColor: Colors.red,
+                  width: MediaQuery.of(context).size.width * 0.80,
+                  elevation: 0,
+                  borderRadius: 25,
+                  color: Colors.red,
+                  child: Wrap(
+                    children: const [
+                      Icon(
+                        FontAwesomeIcons.google,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Text("Sign in with Google",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+
                  //facebook login button
                  RoundedLoadingButton(
                    onPressed: () {
@@ -245,48 +296,42 @@ final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
                    height: 10,
                  ),
 
+                // phoneAuth loading button
+                RoundedLoadingButton(
+                  onPressed: () {
+                    nextScreenReplace(context, const PhoneAuthScreen());
+                    phoneController.reset();
+                  },
+                  controller: phoneController,
+                  successColor: Colors.black,
+                  width: MediaQuery.of(context).size.width * 0.80,
+                  elevation: 0,
+                  borderRadius: 25,
+                  color: Colors.black,
+                  child: Wrap(
+                    children: const [
+                      Icon(
+                        FontAwesomeIcons.phone,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Text("Sign in with Phone",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                ),
+                
                 
                ],
                ),
 
-
-                  TextButton(onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()));
-                  }, child: const Text("Forgot password?")),
-                ],
-              ),
-
-              
-
-              SizedBox(height: 15),
-              
-              Text("OR", textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 15, color: Colors.grey,
-                fontWeight: FontWeight.bold)),
-              
-              SizedBox(height: 15),
                 
-
-                SignInButton(Buttons.Google, onPressed: () async {
-                  await _googleSignIn.signIn();
-                  
-                  
-                if(user != null) {
-                  // ignore: use_build_context_synchronously
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
-                }
-              setState(() {});
-
-            }),
-            SignInButton(Buttons.Facebook, onPressed: (){
-              //handleFacebookAuth();
-              
-            }),
-            
-            SignInButton(Buttons.Apple, onPressed: () {
-
-            }),
-
             ],
           ),
         ),
@@ -302,45 +347,87 @@ final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
     
   }
 
-  //handling Facebookauth
-   Future handleFacebookAuth() async {
-     final sp = context.read<SignInProvider>();
-     final ip = context.read<InternetProvider>();
-     await ip.checkInternetConnection();
 
-     if (ip.hasInternet == false) {
+  // handling google sigin in
+  Future handleGoogleSignIn() async {
+    final sp = context.read<SignInProvider>();
+    final ip = context.read<InternetProvider>();
+    await ip.checkInternetConnection();
+
+    if (ip.hasInternet == false) {
       openSnackbar(context, "Check your Internet connection", Colors.red);
-       //facebookController.reset();
-     } else {
-       await sp.signInWithFacebook().then((value) {
-         if (sp.hasError == true) {
-           openSnackbar(context, sp.errorCode.toString(), Colors.red);
-           facebookController.reset();
-         } else {
+      googleController.reset();
+    } else {
+      await sp.signInWithGoogle().then((value) {
+        if (sp.hasError == true) {
+          openSnackbar(context, sp.errorCode.toString(), Colors.red);
+          googleController.reset();
+        } else {
           // checking whether user exists or not
           sp.checkUserExists().then((value) async {
-           if (value == true) {
-               // user exists
-               await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
-                   .saveDataToSharedPreferences()
-                   .then((value) => sp.setSignIn().then((value) {
-                         //facebookController.success();
+            if (value == true) {
+              // user exists
+              await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
+                  .saveDataToSharedPreferences()
+                  .then((value) => sp.setSignIn().then((value) {
+                        googleController.success();
                         handleAfterSignIn();
-                       })));
-             } else {
-               // user does not exist
-               sp.saveDataToFirestore().then((value) => sp
-                   .saveDataToSharedPreferences()
-                   .then((value) => sp.setSignIn().then((value) {
-                        //facebookController.success();
-                         handleAfterSignIn();
-                       })));
-             }
-           });
-         }
-       });
-     }
-   }
+                      })));
+            } else {
+              // user does not exist
+              sp.saveDataToFirestore().then((value) => sp
+                  .saveDataToSharedPreferences()
+                  .then((value) => sp.setSignIn().then((value) {
+                        googleController.success();
+                        handleAfterSignIn();
+                      })));
+            }
+          });
+        }
+      });
+    }
+  }
+
+   // handling facebookauth
+  // handling google sigin in
+  Future handleFacebookAuth() async {
+    final sp = context.read<SignInProvider>();
+    final ip = context.read<InternetProvider>();
+    await ip.checkInternetConnection();
+
+    if (ip.hasInternet == false) {
+      openSnackbar(context, "Check your Internet connection", Colors.red);
+      facebookController.reset();
+    } else {
+      await sp.signInWithFacebook().then((value) {
+        if (sp.hasError == true) {
+          openSnackbar(context, sp.errorCode.toString(), Colors.red);
+          facebookController.reset();
+        } else {
+          // checking whether user exists or not
+          sp.checkUserExists().then((value) async {
+            if (value == true) {
+              // user exists
+              await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
+                  .saveDataToSharedPreferences()
+                  .then((value) => sp.setSignIn().then((value) {
+                        facebookController.success();
+                        handleAfterSignIn();
+                      })));
+            } else {
+              // user does not exist
+              sp.saveDataToFirestore().then((value) => sp
+                  .saveDataToSharedPreferences()
+                  .then((value) => sp.setSignIn().then((value) {
+                        facebookController.success();
+                        handleAfterSignIn();
+                      })));
+            }
+          });
+        }
+      });
+    }
+  }
 
   // handle after signin
   handleAfterSignIn() {
@@ -348,6 +435,7 @@ final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
       nextScreenReplace(context, const HomeScreen());
     });
   }
+
 
   // login function
   void signIn(String email, String password) async {

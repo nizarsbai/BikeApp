@@ -3,8 +3,11 @@ import 'package:auth_bikeapp/screens/login_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
+import '../provider/sign_in_provider.dart';
+import '../utils/next_screen.dart';
 import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,10 +21,18 @@ class _HomeScreenState extends State<HomeScreen> {
 User? user = FirebaseAuth.instance.currentUser;
 UserModel loggedInUser = UserModel();
 
+Future getData() async {
+    final sp = context.read<SignInProvider>();
+    sp.getDataFromSharedPreferences();
+  }
+
 @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getData();
+
+    /*
     FirebaseFirestore.instance
     .collection("users")
     .doc(user!.uid)
@@ -29,11 +40,13 @@ UserModel loggedInUser = UserModel();
     .then((value){
         this.loggedInUser=UserModel.fromMap(value.data());
         setState(() {});
-    });
+        
+    }); */
   }
 
   @override
   Widget build(BuildContext context) {
+        final sp = context.watch<SignInProvider>();
     return Scaffold(
       appBar: AppBar(title: Text("Bienvenu !"),
         centerTitle: true,
@@ -52,9 +65,15 @@ UserModel loggedInUser = UserModel();
               Text("Welcome Back",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              CircleAvatar(
+              backgroundColor: Colors.white,
+              backgroundImage: NetworkImage("${sp.imageUrl}"),
+              radius: 50,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+              /*
               Text("${loggedInUser.firstName} ${loggedInUser.lastName}",
                 style: TextStyle(
                     color: Colors.black54,
@@ -65,14 +84,57 @@ UserModel loggedInUser = UserModel();
                       color: Colors.black54,
                       fontWeight: FontWeight.w500
                   )),
+                  */
               SizedBox(
                 height: 15,
                 ),
-              ActionChip(
-                label: Text("Se déconecter"),
-                 onPressed: (){
-                  logout(context);
-                 }),
+
+                Text(
+              "Welcome ${sp.name}",
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              "${sp.email}",
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              "${sp.uid}",
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("PROVIDER:"),
+                const SizedBox(
+                  width: 5,
+                ),
+                Text("${sp.provider}".toUpperCase(),
+                    style: const TextStyle(color: Colors.red)),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+
+               ElevatedButton(
+                onPressed: () {
+                  sp.userSignOut();
+                  nextScreenReplace(context, const LoginScreen());
+                },
+                child: const Text("SIGNOUT",
+                    style: TextStyle(
+                      color: Colors.white,
+                    )))
 
             ],
           ),

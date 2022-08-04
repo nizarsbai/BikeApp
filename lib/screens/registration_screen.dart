@@ -308,8 +308,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     // writing all the values
     userModel.email = user!.email;
     userModel.uid = user.uid;
-    userModel.firstName = firstNameEditingController.text;
-    userModel.lastName = secondNameEditingController.text;
+    userModel.name = firstNameEditingController.text;
+    userModel.image_url = "https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png";
+    userModel.provider = "EMAIL";
 
     await firebaseFirestore
         .collection("users")
