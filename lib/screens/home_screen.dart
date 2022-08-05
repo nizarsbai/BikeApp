@@ -1,5 +1,6 @@
 import 'package:auth_bikeapp/model/user_model.dart';
 import 'package:auth_bikeapp/screens/login_screen.dart';
+import 'package:auth_bikeapp/screens/principal.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -48,10 +49,10 @@ Future getData() async {
   Widget build(BuildContext context) {
         final sp = context.watch<SignInProvider>();
     return Scaffold(
-      appBar: AppBar(title: Text("Bienvenu !"),
+      appBar: AppBar(title: Text("Bike App"),
         centerTitle: true,
       ),
-      body: Center(child: Padding(
+      body: SingleChildScrollView(child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -126,15 +127,30 @@ Future getData() async {
               height: 20,
             ),
 
-               ElevatedButton(
-                onPressed: () {
-                  sp.userSignOut();
-                  nextScreenReplace(context, const LoginScreen());
-                },
-                child: const Text("SIGNOUT",
-                    style: TextStyle(
-                      color: Colors.white,
-                    )))
+               Column(
+                 children: [
+                   ElevatedButton(
+                    onPressed: () {
+                      sp.userSignOut();
+                      nextScreenReplace(context, const LoginScreen());
+                    },
+                    child: const Text("SIGNOUT",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ))),
+
+                    
+                        ElevatedButton(
+                    onPressed: () {
+                      //sp.userSignOut();
+                      nextScreenReplace(context, const principal());
+                    },
+                    child: const Text("ACCUEIL",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ))),
+                 ],
+               ),
 
             ],
           ),
