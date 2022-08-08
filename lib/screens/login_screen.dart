@@ -3,6 +3,7 @@ import 'package:auth_bikeapp/screens/forgot_password.dart';
 import 'package:auth_bikeapp/screens/home_screen.dart';
 import 'package:auth_bikeapp/screens/myApp.dart';
 import 'package:auth_bikeapp/screens/phoneauth_screen.dart';
+import 'package:auth_bikeapp/screens/principal.dart';
 import 'package:auth_bikeapp/screens/registration_screen.dart';
 import 'package:auth_bikeapp/utils/next_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -119,8 +120,8 @@ final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
                 });
             },
             child: Icon(_obscureText
-             ? Icons.visibility
-             : Icons.visibility_off),
+             ? Icons.visibility_off
+             : Icons.visibility),
              ),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
             hintText: "Password",
@@ -432,7 +433,7 @@ final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
   // handle after signin
   handleAfterSignIn() {
     Future.delayed(const Duration(milliseconds: 1000)).then((value) {
-      nextScreenReplace(context, const HomeScreen());
+      nextScreenReplace(context, const principal());
     });
   }
 
@@ -446,7 +447,7 @@ final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => MainPage())),
+                      MaterialPageRoute(builder: (context) => principal())),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {

@@ -2,6 +2,7 @@ import 'package:auth_bikeapp/provider/internet_provider.dart';
 import 'package:auth_bikeapp/provider/sign_in_provider.dart';
 import 'package:auth_bikeapp/screens/home_screen.dart';
 import 'package:auth_bikeapp/screens/login_screen.dart';
+import 'package:auth_bikeapp/screens/principal.dart';
 import 'package:auth_bikeapp/utils/config.dart';
 import 'package:auth_bikeapp/utils/next_screen.dart';
 import 'package:auth_bikeapp/utils/snack_bar.dart';
@@ -72,7 +73,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.account_circle),
-                      hintText: "Adam Smith",
+                      hintText: "Nom et Prénom",
                       hintStyle: TextStyle(color: Colors.grey[600]),
                       errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -98,7 +99,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.email),
-                      hintText: "abc@gmail.com",
+                      hintText: "exemple@exemple.com",
                       hintStyle: TextStyle(color: Colors.grey[600]),
                       errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -124,7 +125,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.phone),
-                      hintText: "+1-1234567890",
+                      hintText: "+212XXXXXXXXXX",
                       hintStyle: TextStyle(color: Colors.grey[600]),
                       errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -146,7 +147,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                   style: ElevatedButton.styleFrom(
                     primary: Colors.red,
                   ),
-                  child: const Text("Register"),
+                  child: const Text("S'enregistrer"),
                 )
               ],
             ),
@@ -227,7 +228,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                                           .then((value) =>
                                               sp.setSignIn().then((value) {
                                                 nextScreenReplace(context,
-                                                    const HomeScreen());
+                                                    const principal());
                                               })));
                                 } else {
                                   // user does not exist
@@ -236,12 +237,12 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                                           (value) =>
                                               sp.setSignIn().then((value) {
                                                 nextScreenReplace(context,
-                                                    const HomeScreen());
+                                                    const principal());
                                               })));
                                 }
                               });
                             },
-                            child: const Text("Confirm"),
+                            child: const Text("Confirmer"),
                           )
                         ],
                       ),

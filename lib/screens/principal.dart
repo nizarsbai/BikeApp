@@ -1,3 +1,4 @@
+import 'package:auth_bikeapp/screens/navbar.dart';
 import 'package:flutter/material.dart';
 import 'CardWidget.dart';
 class principal extends StatefulWidget {
@@ -18,13 +19,15 @@ class _principalState extends State<principal> with SingleTickerProviderStateMix
   Widget build(BuildContext context) {
 
     return Scaffold(
+      
       backgroundColor: Colors.grey[100],
+      drawer: NavBar(),
       appBar: AppBar(
 
-        backgroundColor: Colors.white,
-        leading: IconButton(onPressed: (){}, icon: const Icon(Icons.menu),color: Colors.blue,),
+        backgroundColor: Colors.blue,
+        //leading: IconButton(onPressed: (){}, icon: const Icon(Icons.menu),color: Colors.white,),
 
-        title: Image.asset('assets/bikeAppLogo.png',width: 80, height: 80,),
+        title: Image.asset('assets/bikeWhite.png',width: 80, height: 80,),
         centerTitle: true,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -43,18 +46,18 @@ class _principalState extends State<principal> with SingleTickerProviderStateMix
               labelPadding: EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
               labelColor: Colors.black,
 
-              labelStyle: TextStyle(fontSize: 20),
+              labelStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               indicator: BoxDecoration(
-                color: Colors.white,
+                color: Colors.blue,
                 borderRadius: BorderRadius.circular(20),
 
               ),
               controller: _tabController,
               tabs: [
 
-                Text('Favorite'),
-                Text('Electric'),
-                Text('Classic'),
+                Text('Favoris'),
+                Text('Electrique'),
+                Text('Classique'),
 
               ],
             ),

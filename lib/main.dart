@@ -7,19 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+    const MyApp({Key? key}) : super(key: key);
   //GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-  //GoogleSignInAccount? user=_googleSignIn.currentUser;
+  
    return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -33,15 +33,6 @@ class MyApp extends StatelessWidget {
         home: SplashScreen(),
         debugShowCheckedModeBanner: false,
       ),
-      /*
-    return MaterialApp(
-      title: 'Email And Password Login',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-        home: SplashScreen(),
-        debugShowCheckedModeBanner: false,
-    ),*/
    );
   }
 }

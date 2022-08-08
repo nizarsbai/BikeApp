@@ -151,8 +151,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 });
             },
             child: Icon(_obscureText
-             ? Icons.visibility
-             : Icons.visibility_off),
+             ? Icons.visibility_off
+             : Icons.visibility),
              ),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Mot de passe",
@@ -190,8 +190,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 });
             },
             child: Icon(_obscureText
-             ? Icons.visibility
-             : Icons.visibility_off),
+             ? Icons.visibility_off
+             : Icons.visibility),
              ),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Confirmer le mot de passe",
@@ -252,9 +252,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         height: 180,
                         child: Image.asset(
                           "assets/bikeAppLogo.png",
-                          fit: BoxFit.contain,
+                          fit: BoxFit.contain
                         )),
-                    SizedBox(height: 45),
+                    SizedBox(height: 10),
                     firstNameField,
                     SizedBox(height: 20),
                     secondNameField,
@@ -264,7 +264,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     passwordField,
                     SizedBox(height: 20),
                     confirmPasswordField,
-                    SizedBox(height: 20),
+                    SizedBox(height: 30),
                     signUpButton,
 
 

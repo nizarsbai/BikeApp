@@ -19,13 +19,13 @@ class _SplashScreenState extends State<SplashScreen> {
   // init state
   @override
   void initState() {
-    //final sp = context.read<SignInProvider>();
+    final sp = context.read<SignInProvider>();
     super.initState();
     // create a timer of 2 seconds
-    Timer(const Duration(seconds: 2), () {
-     // sp.isSignedIn == false
-          /*?*/ nextScreen(context, const LoginScreen());
-         // : nextScreen(context, const HomeScreen());
+    Timer(const Duration(seconds: 3), () {
+      sp.isSignedIn == false
+          ? nextScreen(context, const LoginScreen())
+          : nextScreen(context, const HomeScreen());
     });
   }
 
