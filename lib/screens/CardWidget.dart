@@ -19,7 +19,7 @@ class CardWidget extends StatelessWidget {
               children: [
                 Image.asset('assets/bikeAppLogo.png',width: 150,height: 120,),
                 Text('VTT ST 50',style: TextStyle(),),
-                Text('40\$ - 1km')
+                Text('10\D\H - 1km')
               ],
             ),
 

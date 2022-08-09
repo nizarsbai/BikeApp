@@ -1,6 +1,11 @@
 import 'package:auth_bikeapp/screens/navbar.dart';
+import 'package:auth_bikeapp/screens/profile.dart';
+import 'package:auth_bikeapp/screens/veloCards.dart';
 import 'package:flutter/material.dart';
 import 'CardWidget.dart';
+import 'calendar.dart';
+import 'favorite.dart';
+import 'home_screen.dart';
 class principal extends StatefulWidget {
   const principal({Key? key}) : super(key: key);
 
@@ -9,13 +14,17 @@ class principal extends StatefulWidget {
 }
 
 class _principalState extends State<principal> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  @override
-  void initState(){
-    _tabController = new TabController(length: 3, vsync: this,initialIndex:0)..addListener(() {
+  //late TabController _tabController;
+  // Bottom navigation bar
+  int _currentIndex = 0;
+  final screens = [
+    const veloCards(),
+    const Calendar(),
+    const Favorite(),
+    const Profile()
+  ];
+  
 
-    });
-  }
   Widget build(BuildContext context) {
 
     return Scaffold(
@@ -24,7 +33,7 @@ class _principalState extends State<principal> with SingleTickerProviderStateMix
       drawer: NavBar(),
       appBar: AppBar(
 
-        backgroundColor: Colors.blue,
+        backgroundColor: Color.fromRGBO(56,182,255, 1),
         //leading: IconButton(onPressed: (){}, icon: const Icon(Icons.menu),color: Colors.white,),
 
         title: Image.asset('assets/bikeWhite.png',width: 80, height: 80,),
@@ -37,67 +46,66 @@ class _principalState extends State<principal> with SingleTickerProviderStateMix
         ),
       ),
 
-      body: Column(
-        children: [
-          Container(
-            child: TabBar(
-              isScrollable: true,
-              indicatorPadding: EdgeInsets.all(10),
-              labelPadding: EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
-              labelColor: Colors.black,
+      body: IndexedStack(
+        index: _currentIndex,
+        children: screens,
+      ),
+      
 
-              labelStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-              indicator: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(20),
-
-              ),
-              controller: _tabController,
-              tabs: [
-
-                Text('Favoris'),
-                Text('Electrique'),
-                Text('Classique'),
-
-              ],
-            ),
-          ),
-          Expanded(
-            child: TabBarView(
-
-              controller: _tabController,
-                children: [
-                  CardWidget(),
-                  CardWidget(),
-                  CardWidget(),
-                ]),
-          )
-        ],
-
-      ),bottomNavigationBar: Container(
-
-    decoration: BoxDecoration(
-    color: Colors.white,
-      borderRadius: BorderRadius.only(
-          topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+        topRight: Radius.circular(30), topLeft: Radius.circular(30)),
     ),
+    
     child: Material(
     elevation: 0.0,
     shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(40.0)),
+
     child: BottomNavigationBar(
-    elevation: 0,
-    backgroundColor: Colors.transparent,
-    items: <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-    icon: Icon(Icons.favorite), label: ''),
-    BottomNavigationBarItem(
-    icon: Icon(Icons.calendar_month), label: ''),
-      BottomNavigationBarItem(
-          icon: Icon(Icons.favorite), label: ''),
-    ],
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home), 
+            label: "Home",
+            backgroundColor: Colors.blue
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month), 
+            label: "Calendar",
+            backgroundColor: Colors.orange
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite), 
+            label: "Favorite",
+            backgroundColor: Colors.green
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person), 
+            label: "Profile",
+            backgroundColor: Colors.red
+          ),
+        ],
+        currentIndex: _currentIndex,
+        onTap: (index) => setState(() {
+          _currentIndex = index;
+        }),
+        showUnselectedLabels: true,
+        type: BottomNavigationBarType.fixed,
+      ),
+    
+    //currentIndex: _currentIndex,
+    
+    //onTap: _onItemTapped,
+    
     ),
-    )),
+    ),
+    );
+  
+    
+
+    
 
       /*SafeArea(
         child: Container(
@@ -149,6 +157,6 @@ class _principalState extends State<principal> with SingleTickerProviderStateMix
         ),
       ),*/
 
-    );
+    
   }
 }
