@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auth_bikeapp/provider/sign_in_provider.dart';
 import 'package:auth_bikeapp/screens/home_screen.dart';
 import 'package:auth_bikeapp/screens/login_screen.dart';
+import 'package:auth_bikeapp/screens/principal.dart';
 import 'package:auth_bikeapp/utils/config.dart';
 import 'package:auth_bikeapp/utils/next_screen.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +23,10 @@ class _SplashScreenState extends State<SplashScreen> {
     final sp = context.read<SignInProvider>();
     super.initState();
     // create a timer of 2 seconds
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 2), () {
       sp.isSignedIn == false
           ? nextScreen(context, const LoginScreen())
-          : nextScreen(context, const HomeScreen());
+          : nextScreen(context, const principal());
     });
   }
 

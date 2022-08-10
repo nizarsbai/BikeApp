@@ -1,32 +1,56 @@
+import 'package:auth_bikeapp/model/user_model.dart';
+import 'package:auth_bikeapp/provider/sign_in_provider.dart';
 import 'package:auth_bikeapp/screens/navbar.dart';
 import 'package:auth_bikeapp/screens/profile.dart';
 import 'package:auth_bikeapp/screens/veloCards.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'CardWidget.dart';
-import 'calendar.dart';
+import 'map_screen.dart';
 import 'favorite.dart';
+import 'map_screen.dart';
 import 'home_screen.dart';
 class principal extends StatefulWidget {
   const principal({Key? key}) : super(key: key);
 
   @override
-  State<principal> createState() => _principalState();
+  _principalState createState() => _principalState();
 }
 
 class _principalState extends State<principal> with SingleTickerProviderStateMixin {
   //late TabController _tabController;
   // Bottom navigation bar
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel loggedInUser = UserModel();
+
+    Future getData() async {
+    final sp = context.read<SignInProvider>();
+    sp.getDataFromSharedPreferences();
+  }
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
+
+
+
+
   int _currentIndex = 0;
   final screens = [
     const veloCards(),
-    const Calendar(),
+    const MapScreen(),
     const Favorite(),
     const Profile()
   ];
   
-
+@override
   Widget build(BuildContext context) {
-
+    final sp = context.watch<SignInProvider>();
     return Scaffold(
       
       backgroundColor: Colors.grey[100],

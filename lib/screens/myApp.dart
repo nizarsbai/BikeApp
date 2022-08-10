@@ -1,4 +1,4 @@
-import 'package:auth_bikeapp/screens/calendar.dart';
+import 'package:auth_bikeapp/screens/map_screen.dart';
 import 'package:auth_bikeapp/screens/favorite.dart';
 import 'package:auth_bikeapp/screens/home_screen.dart';
 import 'package:auth_bikeapp/screens/profile.dart';
@@ -20,7 +20,7 @@ class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
   final screens = [
     const HomeScreen(),
-    const Calendar(),
+    const MapScreen(),
     const Favorite(),
     const Profile()
   ];
