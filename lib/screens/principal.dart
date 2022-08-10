@@ -72,8 +72,8 @@ class _principalState extends State<principal> with SingleTickerProviderStateMix
             backgroundColor: Colors.blue
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month), 
-            label: "Calendar",
+            icon: Icon(Icons.map), 
+            label: "Stations",
             backgroundColor: Colors.orange
           ),
           BottomNavigationBarItem(
