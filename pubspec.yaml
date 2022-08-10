@@ -69,6 +69,12 @@ flutter:
     - assets/bikeAppLogo.png
     - assets/bikeBg.png
     - assets/
+
+  fonts:
+    - family: Varela_Round
+      fonts:
+        - asset: fonts/Varela_Round/VarelaRound-Regular.ttf
+          style: italic
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware.
     # For details regarding adding assets from package dependencies, see

@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
           create: ((context) => InternetProvider()),
         ),
       ],
-    child: const MaterialApp(
+    child: MaterialApp(
+        theme: ThemeData(fontFamily: "Varela_Round"),
         home: SplashScreen(),
         debugShowCheckedModeBanner: false,
       ),

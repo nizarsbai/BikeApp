@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/config.dart';
 import 'CardWidget.dart';
 
 class veloCards extends StatefulWidget {
@@ -24,6 +25,17 @@ class _veloCardsState extends State<veloCards> with SingleTickerProviderStateMix
       body:
        Column(
         children: [
+          Padding(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                child: Text(
+                  "Choisir votre vélo",
+                  style: TextStyle(
+                    color: kTextColor,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 23,
+                  ),
+                ),
+              ),
           Container(
             child: TabBar(
               isScrollable: true,
@@ -40,9 +52,9 @@ class _veloCardsState extends State<veloCards> with SingleTickerProviderStateMix
               controller: _tabController,
               tabs: [
 
-                Text('Favoris'),
-                Text('Electrique'),
-                Text('Classique'),
+                Text('Favoris', style: TextStyle(fontFamily: 'Varela_Round')),
+                Text('Electrique',style: TextStyle(fontFamily: 'Varela_Round')),
+                Text('Classique',style: TextStyle(fontFamily: 'Varela_Round')),
 
               ],
             ),
