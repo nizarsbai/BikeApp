@@ -115,7 +115,7 @@ class _principalState extends State<principal> with SingleTickerProviderStateMix
         onTap: (index) => setState(() {
           _currentIndex = index;
         }),
-        showUnselectedLabels: true,
+        showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
       ),
     
@@ -127,10 +127,6 @@ class _principalState extends State<principal> with SingleTickerProviderStateMix
     ),
     );
   
-    
-
-    
-
       /*SafeArea(
         child: Container(
           padding: EdgeInsets.all(8),
