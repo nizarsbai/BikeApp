@@ -1,8 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+
+const LatLng SOURCE_LOCATION = LatLng(33.599192545109936, -7.664233691337921);
+const LatLng DEST_LOCATION = LatLng(33.56806300637081, -7.628466552353953);
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -40,15 +44,22 @@ class MapScreen extends StatefulWidget {
 
 
 class _MapScreenState extends State<MapScreen> {
+  Set<Polyline> _polylines = Set<Polyline>();
+  List<LatLng> polylineCoordinates = [];
+  late PolylinePoints polylinePoints;
+  LatLng currentLocation=const LatLng(33.599192545109936, -7.664233691337921);
+  LatLng destinationLocation=const LatLng(33.56806300637081, -7.628466552353953);
   //add multiple markers on the map
   late GoogleMapController googleMapController;
-  //Completer<GoogleMapController> _controller = Completer();
+  Completer<GoogleMapController> _controller = Completer();
   List<Marker> markers = [];
 
   @override
   void initState() {
     intilize();
     super.initState();
+    polylinePoints = PolylinePoints();
+
   }
   
   intilize() {
@@ -57,35 +68,35 @@ class _MapScreenState extends State<MapScreen> {
             position: LatLng(33.56806300637081, -7.628466552353953),
             infoWindow: const InfoWindow(title: 'Station Maarif'),
             icon: 
-                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
           );
     Marker secondMarker=Marker(
             markerId: MarkerId('Station Mosquée Hassan-II'),
             position: LatLng(33.60950735526005, -7.633051170093907),
             infoWindow: const InfoWindow(title: 'Station Mosquée Hassan-II'),
             icon: 
-                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
           );
           Marker thirdMarker=Marker(
             markerId: MarkerId('Station Place des Nations Unies'),
             position: LatLng(33.595194912570044, -7.618696588039488),
             infoWindow: const InfoWindow(title: 'Station Place des Nations Unies'),
             icon: 
-                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
           );
           Marker forthMarker=Marker(
             markerId: MarkerId('Station Morocco Mall'),
             position: LatLng(33.57691956355926, -7.707088013896289),
             infoWindow: const InfoWindow(title: 'Station Morocco Mall'),
             icon: 
-                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
           );
           Marker fifthMarker=Marker(
             markerId: MarkerId('Station Anfa Place'),
             position: LatLng(33.599192545109936, -7.664233691337921),
             infoWindow: const InfoWindow(title: 'Station Anfa Place'),
             icon: 
-                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
           );
       markers.add(firstMarker);
       markers.add(secondMarker);
@@ -125,6 +136,18 @@ Marker _destination=Marker(
 //   super.dispose();
 //  }
 
+void setInitialLocation() {
+    currentLocation = LatLng(
+      SOURCE_LOCATION.latitude,
+      SOURCE_LOCATION.longitude
+    );
+
+    destinationLocation = LatLng(
+      DEST_LOCATION.latitude,
+      DEST_LOCATION.longitude
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -133,10 +156,14 @@ Marker _destination=Marker(
         
         myLocationButtonEnabled: true,
         zoomControlsEnabled: true,
+        compassEnabled: false,
+        tiltGesturesEnabled: false,
+        polylines: _polylines,
         initialCameraPosition: _initialCameraPosition,
         onMapCreated: (GoogleMapController controller) {
           //_controller.complete(controller);
           googleMapController = controller;
+          setPolylines();
 
         },
 
@@ -172,14 +199,56 @@ Marker _destination=Marker(
 
           markers.add(Marker(markerId: const MarkerId('Votre Position'),position: LatLng(position.latitude, position.longitude)));
 
-          setState(() {});
+          
+
+        //   setState(() {
+        //      _polylines.add(
+        //     Polyline(
+        //     width: 10,
+        //     polylineId: PolylineId('polyLine'),
+        //     color: Color(0xFF08A5CB),
+        //     points: polylineCoordinates
+        //   )
+        // );
+        //   });
           }, 
           label:const Text("Ma Position"),
           icon: const Icon(Icons.location_history),
     ),
-    );
     
+    );
   }
+  
+  void setPolylines() async {
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      "<AIzaSyDGIlvQGO-4WnHB_t7FgHG5atjI0WiyqxA>",
+      PointLatLng(
+        currentLocation.latitude,
+        currentLocation.longitude
+      ),
+      PointLatLng(
+        destinationLocation.latitude,
+        destinationLocation.longitude
+      )
+    );
+
+    if (result.status == 'OK') {
+      result.points.forEach((PointLatLng point) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      });
+
+      setState(() {
+        _polylines.add(
+          Polyline(
+            width: 10,
+            polylineId: PolylineId('polyLine'),
+            color: Color(0xFF08A5CB),
+            points: polylineCoordinates
+          )
+        );
+      });
+    }
+    }
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -203,7 +272,9 @@ Marker _destination=Marker(
     Position position = await Geolocator.getCurrentPosition();
 
     return position;
+
+    
   }
 
-  }
+}
   
