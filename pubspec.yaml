@@ -45,6 +45,7 @@ dependencies:
   flutter_signin_button: ^2.0.0
   fluttertoast: ^8.0.9
   font_awesome_flutter: ^9.0.0
+  geolocator: ^9.0.1
   google_maps_flutter: ^2.1.10
   google_sign_in: ^5.4.0
   http: ^0.13.4

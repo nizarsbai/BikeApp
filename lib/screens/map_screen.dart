@@ -1,6 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
@@ -11,9 +11,38 @@ class MapScreen extends StatefulWidget {
   _MapScreenState createState() => _MapScreenState();
 }
 
+
+
+// Future<LocationData?> _currentLocation() async {
+//     bool serviceEnabled;
+//     PermissionStatus permissionGranted;
+ 
+//     Location location = new Location();
+ 
+//     serviceEnabled = await location.serviceEnabled();
+//     if (!serviceEnabled) {
+//       serviceEnabled = await location.requestService();
+//       if (!serviceEnabled) {
+//         return null;
+//       }
+//     }
+ 
+//     permissionGranted = await location.hasPermission();
+//     if (permissionGranted == PermissionStatus.denied) {
+//       permissionGranted = await location.requestPermission();
+//       if (permissionGranted != PermissionStatus.granted) {
+//         return null;
+//       }
+//     }
+//     return await location.getLocation();
+//   }
+
+
+
 class _MapScreenState extends State<MapScreen> {
   //add multiple markers on the map
-  Completer<GoogleMapController> _controller = Completer();
+  late GoogleMapController googleMapController;
+  //Completer<GoogleMapController> _controller = Completer();
   List<Marker> markers = [];
 
   @override
@@ -98,13 +127,17 @@ Marker _destination=Marker(
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: GoogleMap(
-        myLocationButtonEnabled: false,
+        
+        myLocationButtonEnabled: true,
         zoomControlsEnabled: true,
         initialCameraPosition: _initialCameraPosition,
         onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
+          //_controller.complete(controller);
+          googleMapController = controller;
+
         },
 
         markers: markers.map((e) => e).toSet(),
@@ -127,33 +160,50 @@ Marker _destination=Marker(
         child: const Icon(Icons.center_focus_strong),
       ),
       */
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          Position position = await _determinePosition();
+
+          googleMapController
+              .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(position.latitude, position.longitude), zoom: 14)));
+
+
+          markers.clear();
+
+          markers.add(Marker(markerId: const MarkerId('Votre Position'),position: LatLng(position.latitude, position.longitude)));
+
+          setState(() {});
+          }, 
+          label:const Text("Ma Position"),
+          icon: const Icon(Icons.location_history),
+    ),
     );
+    
   }
 
-  // void _addMarker(LatLng pos) {
-  //   if(_origin==null || (_origin != null && _destination != null)) {
-  //       setState(() {
-  //         _origin = Marker(
-  //           markerId: const MarkerId('origin'),
-  //           infoWindow: const InfoWindow(title: 'Origin'),
-  //           icon: 
-  //                 BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-  //           position: pos,
-  //         );
-  //         //Reset Destination
-  //       late final _destination=null;
-  //       });
-  //   } else {
-  //       // Origin is already set
-  //       // Set destination
-  //       setState(() {
-  //         _destination=Marker(
-  //         markerId: const MarkerId('destination'),
-  //           infoWindow: const InfoWindow(title: 'Destination'),
-  //           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-  //           position: pos,
-  //           );
-  //       });
-  //   }
-  //}
-}
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if(!serviceEnabled){
+      return Future.error('Services de localisation sont désactivés');
+    }
+
+    permission = await Geolocator.requestPermission();
+
+    if(permission == LocationPermission.denied){
+      return Future.error('Autorisation de Localisation est désactivé');
+    }
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Location permissions are permanently denied');
+    }
+
+    Position position = await Geolocator.getCurrentPosition();
+
+    return position;
+  }
+
+  }
+  
