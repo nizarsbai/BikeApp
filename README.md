@@ -1,4 +1,4 @@
-# auth_bikeapp
+# BikeApp
 
 Login and Registration
 
