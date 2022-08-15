@@ -1,6 +1,7 @@
-# auth_bikeapp
+# BikeApp
 
-Login and Registration
+BikeApp est une application mobile, de location des vélos,
+qui vous permet de circuler rapidement et en toute sécurité, ainsi qu’analyser vos performances à l’aide de statistiques détaillées telles que (la durée, la distance, la vitesse,...) faites grâce au GPS de votre smartphone.
 
 ## Getting Started
 
