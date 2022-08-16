@@ -1,6 +1,6 @@
 # BikeApp
 
-<img style="text-align:center;" src="assets/bikeAppLogo.png" alt="BikeApp" height="200" width="200">
+<img src="assets/bikeAppLogo.png" alt="BikeApp" height="200" width="200">
 
 BikeApp est une application mobile, de location des vélos,
 qui vous permet de circuler rapidement et en toute sécurité, ainsi qu’analyser vos performances à l’aide de statistiques détaillées telles que (la durée, la distance, la vitesse,...) faites grâce au GPS de votre smartphone.
