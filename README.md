@@ -1,9 +1,11 @@
 # BikeApp
 
+<img src="assets/bikeAppLogo.png" alt="BikeApp">
+
 BikeApp est une application mobile, de location des vélos,
 qui vous permet de circuler rapidement et en toute sécurité, ainsi qu’analyser vos performances à l’aide de statistiques détaillées telles que (la durée, la distance, la vitesse,...) faites grâce au GPS de votre smartphone.
 
-## Getting Started
+## Screen de connexion 
 
 This project is a starting point for a Flutter application.
 
