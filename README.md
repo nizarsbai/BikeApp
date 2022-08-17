@@ -7,9 +7,9 @@ qui vous permet de circuler rapidement et en toute sécurité, ainsi qu’analys
 
 ## Screen de connexion 
 
-This project is a starting point for a Flutter application.
+Ce screen vous permet de se connecter ou de choisir une autre méthode de connexion par Google, par Facebook ou par téléphone. Sinon vous pouvez créer un nouveau compte, et si vous avez oublié le mot de passe vous cliquez sur Mot de passe Oublié.
 
-A few resources to get you started if this is your first Flutter project:
+
 
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
