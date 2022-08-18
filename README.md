@@ -51,7 +51,7 @@ Ce screen affiche les informations sur votre comptes, votre photo de profile, no
 
 ## Map Screen
 
-<img src="assets/Map.png" alt="BikeApp" height="1000" width="2000">
+<img src="assets/Map.png" alt="BikeApp" height="500" width="700">
 
 Map Screen vous permet de voir tout les stations disponible et leurs noms qui contient des vèlos, vous pouvez aussi voir votre position en cliquant sur ma position.
 
