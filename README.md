@@ -56,7 +56,7 @@ Ce screen affiche les informations sur votre comptes, votre photo de profile, no
 Map Screen vous permet de voir tout les stations disponible et leurs noms qui contient des vèlos, vous pouvez aussi voir votre position en cliquant sur ma position.
 
 
-
+## Dark Mode et Light Mode Interface
 
 
 
