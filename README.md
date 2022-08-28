@@ -62,19 +62,19 @@ Toutes les interfaces du Dark Mode
 
 -- Profile
 
-<img src="assets/darkMode01.png" alt="BikeApp" height="600" width="300">
+<img src="assets/darkMode01.jpeg" alt="BikeApp" height="600" width="300">
 
 -- Modifier le profile
 
-<img src="assets/darkMode02.png" alt="BikeApp" height="600" width="300">
+<img src="assets/darkMode02.jpeg" alt="BikeApp" height="600" width="300">
 
 -- Paramètres
 
-<img src="assets/darkMode03.png" alt="BikeApp" height="600" width="300">
+<img src="assets/darkMode03.jpeg" alt="BikeApp" height="600" width="300">
 
 -- Sidebar
 
-<img src="assets/darkMode04.png" alt="BikeApp" height="600" width="300">
+<img src="assets/darkMode04.jpeg" alt="BikeApp" height="600" width="300">
 
 
 
