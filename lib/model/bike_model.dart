@@ -52,6 +52,7 @@ class BikeModel {
       'description': description,
       'range': range,
       'rating': rating,
+      'image':image,
       'currentStation': currentStation,
     };
   }

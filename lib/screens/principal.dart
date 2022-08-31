@@ -1,5 +1,6 @@
 import 'package:auth_bikeapp/model/user_model.dart';
 import 'package:auth_bikeapp/provider/sign_in_provider.dart';
+import 'package:auth_bikeapp/screens/admin/addbike_screen.dart';
 import 'package:auth_bikeapp/screens/navbar.dart';
 import 'package:auth_bikeapp/screens/profile.dart';
 import 'package:auth_bikeapp/screens/veloCards.dart';
@@ -44,7 +45,8 @@ class _principalState extends State<principal> with SingleTickerProviderStateMix
   final screens = [
     const veloCards(),
     const MapScreen(),
-    const Favorite(),
+    //const Favorite(),
+    const AddBikeScreen(),
     const Profile()
   ];
   

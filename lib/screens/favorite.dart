@@ -12,6 +12,7 @@ class _FavoriteState extends State<Favorite> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Text("Mes favoris"),
+      
     );
   }
 }
