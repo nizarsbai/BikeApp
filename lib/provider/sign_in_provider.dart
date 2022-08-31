@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:auth_bikeapp/utils/config.dart';
+
+import 'package:auth_bikeapp/screens/login_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class SignInProvider extends ChangeNotifier {
   bool _isSignedIn = false;
   bool get isSignedIn => _isSignedIn;
 
-  // //hasError, errorCode, provider,uid, email, name, imageUrl
+  // //hasError, errorCode, provider,uid, email, name, image_url
   bool _hasError = false;
   bool get hasError => _hasError;
 
@@ -42,8 +43,8 @@ class SignInProvider extends ChangeNotifier {
   String? _email;
   String? get email => _email;
 
-  String? _imageUrl;
-  String? get imageUrl => _imageUrl;
+  String? _image_url;
+  String? get image_url => _image_url;
 
   SignInProvider() {
     checkSignInUser();
@@ -62,7 +63,128 @@ class SignInProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // // sign in with google
+  // Future signUpWithEmail(String email, String password) async {
+  //   try {
+  //     // signing to firebase user instance
+  //     final User userDetails = (await firebaseAuth
+  //             .createUserWithEmailAndPassword(email: email, password: password))
+  //         .user!;
+
+  //     // now save all values
+  //     _name = userDetails.displayName;
+  //     _email = userDetails.email;
+  //     _image_url = userDetails.photoURL;
+  //     _provider = "EMAIL";
+  //     _uid = userDetails.uid;
+  //     notifyListeners();
+  //   } on FirebaseAuthException catch (e) {
+  //     switch (e.code) {
+  //       case "invalid-email":
+  //         _errorCode = "Your email address appears to be malformed.";
+  //         _hasError = true;
+  //         notifyListeners();
+  //         break;
+  //       case "wrong-password":
+  //         _errorCode = "Your password is wrong.";
+  //         _hasError = true;
+  //         notifyListeners();
+  //         break;
+  //       case "user-not-found":
+  //         _errorCode = "User with this email doesn't exist.";
+  //         _hasError = true;
+  //         notifyListeners();
+  //         break;
+  //       case "user-disabled":
+  //         _errorCode = "User with this email has been disabled.";
+  //         _hasError = true;
+  //         notifyListeners();
+  //         break;
+  //       case "too-many-requests":
+  //         _errorCode = "Too many requests";
+  //         _hasError = true;
+  //         notifyListeners();
+  //         break;
+  //       case "operation-not-allowed":
+  //         _errorCode = "Signing in with Email and Password is not enabled.";
+  //         _hasError = true;
+  //         notifyListeners();
+  //         break;
+  //       default:
+  //         _errorCode = "An undefined Error happened.";
+  //         _hasError = true;
+  //         notifyListeners();
+  //         break;
+  //     }
+  //   }
+  //   // } else {
+  //   //   _hasError = true;
+  //   //   notifyListeners();
+  //   // }
+  // }
+
+  Future signInWithEmail(String email, String password) async {
+    // User? user = FirebaseAuth.instance.currentUser;
+    // if (user != null) {
+    // executing our authentication
+    try {
+      // signing to firebase user instance
+      final User userDetails = (await firebaseAuth.signInWithEmailAndPassword(
+              email: email, password: password))
+          .user!;
+
+      // now save all values
+      _name = userDetails.displayName;
+      _email = userDetails.email;
+      _image_url = userDetails.photoURL;
+      _provider = "EMAIL";
+      _uid = userDetails.uid;
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "invalid-email":
+          _errorCode = "Your email address appears to be malformed.";
+          _hasError = true;
+          notifyListeners();
+          break;
+        case "wrong-password":
+          _errorCode = "Your password is wrong.";
+          _hasError = true;
+          notifyListeners();
+          break;
+        case "user-not-found":
+          _errorCode = "User with this email doesn't exist.";
+          _hasError = true;
+          notifyListeners();
+          break;
+        case "user-disabled":
+          _errorCode = "User with this email has been disabled.";
+          _hasError = true;
+          notifyListeners();
+          break;
+        case "too-many-requests":
+          _errorCode = "Too many requests";
+          _hasError = true;
+          notifyListeners();
+          break;
+        case "operation-not-allowed":
+          _errorCode = "Signing in with Email and Password is not enabled.";
+          _hasError = true;
+          notifyListeners();
+          break;
+        default:
+          _errorCode = "An undefined Error happened.";
+          _hasError = true;
+          notifyListeners();
+          break;
+      }
+    }
+    // } else {
+    //   _hasError = true;
+    //   notifyListeners();
+    // }
+  }
+
+  // sign in with google
   Future signInWithGoogle() async {
     final GoogleSignInAccount? googleSignInAccount =
         await googleSignIn.signIn();
@@ -84,7 +206,7 @@ class SignInProvider extends ChangeNotifier {
         // now save all values
         _name = userDetails.displayName;
         _email = userDetails.email;
-        _imageUrl = userDetails.photoURL;
+        _image_url = userDetails.photoURL;
         _provider = "GOOGLE";
         _uid = userDetails.uid;
         notifyListeners();
@@ -128,7 +250,7 @@ class SignInProvider extends ChangeNotifier {
   //       // save all the data
   //       _name = userDetails!.name;
   //       _email = firebaseAuth.currentUser!.email;
-  //       _imageUrl = userDetails.thumbnailImage;
+  //       _image_url = userDetails.thumbnailImage;
   //       _uid = userDetails.id.toString();
   //       _provider = "TWITTER";
   //       _hasError = false;
@@ -176,7 +298,7 @@ class SignInProvider extends ChangeNotifier {
         // saving the values
         _name = profile['name'];
         _email = profile['email'];
-        _imageUrl = profile['picture']['data']['url'];
+        _image_url = profile['picture']['data']['url'];
         _uid = profile['id'];
         _hasError = false;
         _provider = "FACEBOOK";
@@ -217,7 +339,7 @@ class SignInProvider extends ChangeNotifier {
               _uid = snapshot['uid'],
               _name = snapshot['name'],
               _email = snapshot['email'],
-              _imageUrl = snapshot['image_url'],
+              _image_url = snapshot['image_url'],
               _provider = snapshot['provider'],
             });
   }
@@ -229,7 +351,7 @@ class SignInProvider extends ChangeNotifier {
       "name": _name,
       "email": _email,
       "uid": _uid,
-      "image_url": _imageUrl,
+      "image_url": _image_url,
       "provider": _provider,
     });
     notifyListeners();
@@ -240,7 +362,7 @@ class SignInProvider extends ChangeNotifier {
     await s.setString('name', _name!);
     await s.setString('email', _email!);
     await s.setString('uid', _uid!);
-    await s.setString('image_url', _imageUrl!);
+    await s.setString('image_url', _image_url!);
     await s.setString('provider', _provider!);
     notifyListeners();
   }
@@ -249,7 +371,7 @@ class SignInProvider extends ChangeNotifier {
     final SharedPreferences s = await SharedPreferences.getInstance();
     _name = s.getString('name');
     _email = s.getString('email');
-    _imageUrl = s.getString('image_url');
+    _image_url = s.getString('image_url');
     _uid = s.getString('uid');
     _provider = s.getString('provider');
     notifyListeners();
@@ -288,10 +410,20 @@ class SignInProvider extends ChangeNotifier {
   void phoneNumberUser(User user, email, name) {
     _name = name;
     _email = email;
-    _imageUrl =
-        "https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png";
+    _image_url =
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTN9TaGrF3qmBtBoXN5TaTdijk8dUfq2z7w6a-QjVoEjtxv2f2IcWph0-e7avSfpgTjdg&usqp=CAU";
     _uid = user.phoneNumber;
     _provider = "PHONE";
+    notifyListeners();
+  }
+
+  void signUpUser(User user, email, name) {
+    _name = name;
+    _email = email;
+    _image_url =
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTN9TaGrF3qmBtBoXN5TaTdijk8dUfq2z7w6a-QjVoEjtxv2f2IcWph0-e7avSfpgTjdg&usqp=CAU";
+    _uid = user.uid;
+    _provider = "EMAIL";
     notifyListeners();
   }
 }

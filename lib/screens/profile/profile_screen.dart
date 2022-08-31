@@ -1,5 +1,6 @@
 import 'package:auth_bikeapp/provider/sign_in_provider.dart';
 import 'package:auth_bikeapp/screens/admin/addbike_screen.dart';
+import 'package:auth_bikeapp/screens/admin/addstation_screen.dart';
 import 'package:auth_bikeapp/screens/login_screen.dart';
 import 'package:auth_bikeapp/screens/home/notifications_screen.dart';
 import 'package:auth_bikeapp/screens/home/parametres_screen.dart';
@@ -10,14 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+class Profilescreen extends StatefulWidget {
+  const Profilescreen({Key? key}) : super(key: key);
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<Profilescreen> createState() => _ProfilescreenState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfilescreenState extends State<Profilescreen> {
   Future getData() async {
     final sp = context.read<SignInProvider>();
     sp.getDataFromSharedPreferences();

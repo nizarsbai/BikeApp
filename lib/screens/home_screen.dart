@@ -70,7 +70,7 @@ Future getData() async {
               ),
               CircleAvatar(
               backgroundColor: Colors.white,
-              backgroundImage: NetworkImage("${sp.imageUrl}"),
+              backgroundImage: NetworkImage("${sp.image_url}"),
               radius: 50,
             ),
             const SizedBox(
