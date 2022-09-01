@@ -43,6 +43,7 @@ class SignInProvider extends ChangeNotifier {
   String? _email;
   String? get email => _email;
 
+  // ignore: non_constant_identifier_names
   String? _image_url;
   String? get image_url => _image_url;
 
