@@ -1,6 +1,7 @@
 import 'package:auth_bikeapp/model/user_model.dart';
 import 'package:auth_bikeapp/provider/sign_in_provider.dart';
 import 'package:auth_bikeapp/screens/admin/addbike_screen.dart';
+import 'package:auth_bikeapp/screens/home/notifications_screen.dart';
 import 'package:auth_bikeapp/screens/navbar.dart';
 import 'package:auth_bikeapp/screens/profile.dart';
 import 'package:auth_bikeapp/screens/veloCards.dart';
@@ -9,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../utils/config.dart';
+import '../utils/next_screen.dart';
 import 'CardWidget.dart';
 import 'map_screen.dart';
 import 'favorite.dart';
@@ -57,21 +59,35 @@ class _principalState extends State<principal> with SingleTickerProviderStateMix
     final sp = context.watch<SignInProvider>();
     return Scaffold(
       
-      backgroundColor: Colors.grey[100],
-      drawer: NavBar(),
+      //backgroundColor: Colors.grey[100],
+      drawer: const NavBar(),
       appBar: AppBar(
-
-        backgroundColor: Color.fromRGBO(56,182,255, 1),
+        
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        //backgroundColor: Color.fromRGBO(56,182,255, 1),
         //leading: IconButton(onPressed: (){}, icon: const Icon(Icons.menu),color: Colors.white,),
 
-        title: Image.asset('assets/bikeWhite.png',width: 80, height: 80,),
+        title: Image.asset('assets/bikeAppLogo.png',width: 80, height: 80,),
         centerTitle: true,
+        iconTheme: Theme.of(context).iconTheme,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             bottomRight: Radius.circular(35)
           ),
+          
 
         ),
+        actions: [
+          TextButton.icon(
+            style: TextButton.styleFrom(
+                primary: Theme.of(context).iconTheme.color),
+            onPressed: () {
+              nextScreen(context, const NotificationsScreen());
+            },
+            icon: const Icon(Icons.notifications),
+            label: const Text(''),
+          ),
+        ],
       ),
 
       body: IndexedStack(
@@ -93,6 +109,9 @@ class _principalState extends State<principal> with SingleTickerProviderStateMix
     borderRadius: BorderRadius.circular(40.0)),
 
     child: BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      selectedItemColor: Theme.of(context).iconTheme.color,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home), 
@@ -120,7 +139,6 @@ class _principalState extends State<principal> with SingleTickerProviderStateMix
           _currentIndex = index;
         }),
         showUnselectedLabels: false,
-        type: BottomNavigationBarType.fixed,
       ),
     
     //currentIndex: _currentIndex,

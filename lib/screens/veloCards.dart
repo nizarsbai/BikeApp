@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../utils/config.dart';
 import 'CardWidget.dart';
 
@@ -21,12 +22,14 @@ class _veloCardsState extends State<veloCards> with SingleTickerProviderStateMix
   
   @override
   Widget build(BuildContext context) {
+    bool _darkMode =
+        Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark;
     return Scaffold(
       body:
        Column(
         children: [
           Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 4),
                 child: Text(
                   "Choisir votre vélo",
                   style: TextStyle(
@@ -39,19 +42,25 @@ class _veloCardsState extends State<veloCards> with SingleTickerProviderStateMix
           Container(
             child: TabBar(
               isScrollable: true,
-              indicatorPadding: EdgeInsets.all(10),
-              labelPadding: EdgeInsets.only(left:20, right: 20, top: 10, bottom: 10),
-              labelColor: Colors.black,
-
-              labelStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-              indicator: BoxDecoration(
-                color: Color.fromARGB(255, 212, 209, 209),
-                borderRadius: BorderRadius.circular(20),
-
+              indicatorPadding: const EdgeInsets.all(0),
+              labelPadding: const EdgeInsets.only(left:18, right: 18, top: 7, bottom: 7),
+              labelColor: _darkMode
+                  ? Theme.of(context).scaffoldBackgroundColor
+                  : Colors.white,
+              labelStyle: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
-              controller: _tabController,
-              tabs: [
+          //     backgroundColor:
+          // _darkMode ? Theme.of(context).scaffoldBackgroundColor : Colors.white,
 
+              indicator: BoxDecoration(
+                color: _darkMode ? Colors.white : kNavyBlue,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              unselectedLabelColor: _darkMode ? Colors.white : kNavyBlue,
+              controller: _tabController,
+              tabs: const [
                 Text('Favoris', style: TextStyle(fontFamily: 'Varela_Round')),
                 Text('Electrique',style: TextStyle(fontFamily: 'Varela_Round')),
                 Text('Classique',style: TextStyle(fontFamily: 'Varela_Round')),
@@ -62,7 +71,7 @@ class _veloCardsState extends State<veloCards> with SingleTickerProviderStateMix
           Expanded(
             child: TabBarView(
               controller: _tabController,
-                children: [
+                children: const [
                   CardWidget(),
                   CardWidget(),
                   CardWidget(),
