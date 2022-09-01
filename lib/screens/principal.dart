@@ -8,11 +8,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../utils/config.dart';
 import 'CardWidget.dart';
 import 'map_screen.dart';
 import 'favorite.dart';
 import 'map_screen.dart';
-import 'home_screen.dart';
 class principal extends StatefulWidget {
   const principal({Key? key}) : super(key: key);
 
@@ -45,13 +45,15 @@ class _principalState extends State<principal> with SingleTickerProviderStateMix
   final screens = [
     const veloCards(),
     const MapScreen(),
-    //const Favorite(),
-    const AddBikeScreen(),
+    const Favorite(),
+    //const AddBikeScreen(),
     const Profile()
   ];
   
 @override
   Widget build(BuildContext context) {
+    bool _darkMode =
+        Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark;
     final sp = context.watch<SignInProvider>();
     return Scaffold(
       
@@ -80,7 +82,7 @@ class _principalState extends State<principal> with SingleTickerProviderStateMix
 
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-        color: Colors.white,
+        color: kTextColor,
         borderRadius: BorderRadius.only(
         topRight: Radius.circular(30), topLeft: Radius.circular(30)),
     ),

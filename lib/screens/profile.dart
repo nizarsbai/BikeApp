@@ -114,7 +114,7 @@ class _ProfileState extends State<Profile> {
               press: () async {
                 final action = await AlertDialogs.yesCancelDialog(
                     context, 'Se déconnecter', 'Êtes vous sûr ?');
-                if (action == DialogsAction.Oui) {
+                if (action == DialogsAction.oui) {
                   sp.userSignOut();
                   nextScreenReplace(context, const LoginScreen());
                 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Config {
-  static final app_icon = "assets/bikeAppLogo.png";
-  static final app_font = "Varela_Round";
+  static const app_icon = "assets/bikeAppLogo.png";
+  static const app_font = "Varela_Round";
   // static final apikey_twitter = "9Feip53jOk8esDtSM6w08d3XT";
   // static final secretkey_twitter =
   //     "1eJOsBMqbI5HGjVAH7KNWkJsGgD44EHMFsZrqb1ne5nfYSwhBW";
@@ -10,12 +10,12 @@ class Config {
   static final darkTheme = ThemeData(
     //backgroundColor: Color(0xff212E52),
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: Color(0xff212E52),
+    scaffoldBackgroundColor: const Color(0xff212E52),
     primaryColor: Colors.black,
     // colorScheme: ColorScheme.fromSeed(
     //     seedColor: Color.fromARGB(255, 8, 34, 50), brightness: Brightness.dark),
     fontFamily: "Varela_Round",
-    iconTheme: IconThemeData(color: Colors.white, opacity: 1),
+    iconTheme: const IconThemeData(color: Colors.white, opacity: 1),
   );
 
   static final lightTheme = ThemeData(
@@ -46,14 +46,14 @@ class ThemeProvider extends ChangeNotifier {
 const kTextColor = Color.fromRGBO(56, 182, 255, 1);
 // const kTextColor = Colors.blueAccent;
 const kTextLightColor = Color.fromARGB(255, 171, 185, 196);
-
+const kNavyBlue = Color(0xff212E52);
 const kDefaultPaddin = 20.0;
 
 AppBar app_bar(BuildContext context, String title) {
   return AppBar(
     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     iconTheme: Theme.of(context).iconTheme,
-    elevation: 0,
+    elevation: 2,
     title:
         Text(title, style: TextStyle(color: Theme.of(context).iconTheme.color)),
     leading: IconButton(
@@ -65,7 +65,7 @@ AppBar app_bar(BuildContext context, String title) {
   );
 }
 
-enum DialogsAction { Oui, Annuler }
+enum DialogsAction { oui, annuler }
 
 class AlertDialogs {
   static Future<DialogsAction> yesCancelDialog(
@@ -84,27 +84,25 @@ class AlertDialogs {
           content: Text(body),
           actions: <Widget>[
             ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(DialogsAction.Annuler),
-              child: Text(
+              onPressed: () => Navigator.of(context).pop(DialogsAction.annuler),
+              child: const Text(
                 'Annuler',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor),
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
               ),
             ),
             ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(DialogsAction.Oui),
-              child: Text(
+              onPressed: () => Navigator.of(context).pop(DialogsAction.oui),
+              child: const Text(
                 'Confirmer',
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).primaryColor),
+                style:
+                    TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
               ),
             )
           ],
         );
       },
     );
-    return (action != null) ? action : DialogsAction.Annuler;
+    return (action != null) ? action : DialogsAction.annuler;
   }
 }

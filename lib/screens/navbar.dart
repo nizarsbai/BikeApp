@@ -1,3 +1,4 @@
+import 'package:auth_bikeapp/screens/profile/editprofile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:auth_bikeapp/model/user_model.dart';
 import 'package:auth_bikeapp/provider/sign_in_provider.dart';
@@ -6,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/sign_in_provider.dart';
+import '../utils/config.dart';
+import 'home/parametres_screen.dart';
 import 'login_screen.dart';
 
 class NavBar extends StatefulWidget {
@@ -31,7 +34,11 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     final sp = context.watch<SignInProvider>();
+    bool _darkMode =
+        Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark;
     return Drawer(
+      backgroundColor:
+          _darkMode ? Theme.of(context).scaffoldBackgroundColor : Colors.white,
       child: ListView(
         // Remove padding
         padding: EdgeInsets.zero,
@@ -50,13 +57,16 @@ class _NavBarState extends State<NavBar> {
               ),
             ),
             decoration: BoxDecoration(
-              color: Colors.blue,
+              //color: Colors.blue,
               image: DecorationImage(
                 fit: BoxFit.fill,
                 image: NetworkImage(
                     'https://hdwallpaperim.com/wp-content/uploads/2017/08/24/99743-bicycle-simple_background.jpg'),
               ),
             ),
+            onDetailsPressed: () {
+              nextScreen(context, EditProfile());
+            },
           ),
           ListTile(
             leading: Icon(Icons.favorite),
@@ -98,7 +108,7 @@ class _NavBarState extends State<NavBar> {
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Paramètres'),
-            onTap: () => null,
+            onTap: () => nextScreen(context, ParametresScreen()),
           ),
           ListTile(
             leading: Icon(Icons.description),
@@ -107,11 +117,18 @@ class _NavBarState extends State<NavBar> {
           ),
           Divider(),
           ListTile(
-            title: Text('Se déconnecter'),
-            leading: Icon(Icons.exit_to_app),
-            onTap: () {
-                sp.userSignOut();
-                nextScreenReplace(context, const LoginScreen());
+             title: const Text('Se déconnecter'),
+              leading: const Icon(Icons.exit_to_app),
+              onTap: () async {
+                final action = await AlertDialogs.yesCancelDialog(
+                    context, 'Se déconnecter', 'Êtes vous sûr ?');
+                if (action == DialogsAction.oui) {
+                  sp.userSignOut();
+                  nextScreenReplace(context, const LoginScreen());
+                  // setState(() => tappedYes = true);
+                } else {
+                  // setState(() => tappedYes = false);
+                }
               }),
         ],
       ),
