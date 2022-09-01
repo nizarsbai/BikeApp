@@ -1,4 +1,5 @@
 import 'package:auth_bikeapp/screens/home_screen.dart';
+import 'package:auth_bikeapp/screens/principal.dart';
 import 'package:auth_bikeapp/utils/config.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,7 @@ class ConfirmationScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30)),
                 ),
                 onPressed: () {
-                  nextScreen(context, const HomeScreen());
+                  nextScreen(context, const principal());
                 },
                 child: const Text(
                   "Retourner à la page d'acceuil",
