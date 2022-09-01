@@ -1,7 +1,5 @@
 import 'package:auth_bikeapp/main.dart';
 import 'package:auth_bikeapp/screens/forgot_password.dart';
-import 'package:auth_bikeapp/screens/home_screen.dart';
-import 'package:auth_bikeapp/screens/myApp.dart';
 import 'package:auth_bikeapp/screens/phoneauth_screen.dart';
 import 'package:auth_bikeapp/screens/principal.dart';
 import 'package:auth_bikeapp/screens/registration_screen.dart';

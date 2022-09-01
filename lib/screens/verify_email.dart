@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:auth_bikeapp/screens/home_screen.dart';
+import 'package:auth_bikeapp/screens/principal.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -55,7 +55,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     if(user!.emailVerified) {
       timer!.cancel();
       // ignore: use_build_context_synchronously
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const principal()));
     }
   }
 }

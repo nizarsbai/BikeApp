@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:auth_bikeapp/provider/sign_in_provider.dart';
-import 'package:auth_bikeapp/screens/home_screen.dart';
 import 'package:auth_bikeapp/screens/login_screen.dart';
 import 'package:auth_bikeapp/screens/principal.dart';
 import 'package:auth_bikeapp/utils/config.dart';
