@@ -5,8 +5,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
-const LatLng SOURCE_LOCATION = LatLng(33.599192545109936, -7.664233691337921);
-const LatLng DEST_LOCATION = LatLng(33.56806300637081, -7.628466552353953);
+const LatLng source_location = LatLng(33.599192545109936, -7.664233691337921);
+const LatLng dest_location = LatLng(33.56806300637081, -7.628466552353953);
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -16,35 +16,8 @@ class MapScreen extends StatefulWidget {
 }
 
 
-
-// Future<LocationData?> _currentLocation() async {
-//     bool serviceEnabled;
-//     PermissionStatus permissionGranted;
- 
-//     Location location = new Location();
- 
-//     serviceEnabled = await location.serviceEnabled();
-//     if (!serviceEnabled) {
-//       serviceEnabled = await location.requestService();
-//       if (!serviceEnabled) {
-//         return null;
-//       }
-//     }
- 
-//     permissionGranted = await location.hasPermission();
-//     if (permissionGranted == PermissionStatus.denied) {
-//       permissionGranted = await location.requestPermission();
-//       if (permissionGranted != PermissionStatus.granted) {
-//         return null;
-//       }
-//     }
-//     return await location.getLocation();
-//   }
-
-
-
 class _MapScreenState extends State<MapScreen> {
-  Set<Polyline> _polylines = Set<Polyline>();
+  final Set<Polyline> _polylines = {};
   List<LatLng> polylineCoordinates = [];
   late PolylinePoints polylinePoints;
   LatLng currentLocation=const LatLng(33.599192545109936, -7.664233691337921);
@@ -103,9 +76,25 @@ class _MapScreenState extends State<MapScreen> {
       markers.add(thirdMarker);
       markers.add(forthMarker);
       markers.add(fifthMarker);
+
+
+      // _polylines.add(
+      //   Polyline(polylineId: PolylineId('1'),
+      //   points : polylineCoordinates
+      // ),
+      // );
       setState(() {
-        
+        _polylines.add(
+          Polyline(
+            width: 10,
+            polylineId: const PolylineId('polyLine'),
+            color: const Color(0xFF08A5CB),
+            points: polylineCoordinates
+          )
+        );
       });
+
+      
   }
 
 
@@ -115,36 +104,15 @@ static const _initialCameraPosition = CameraPosition(
 );
 
 
-//late final GoogleMapController _googleMapController;
-/*
-Marker _origin=Marker(
-            markerId: const MarkerId('origin'),
-            infoWindow: const InfoWindow(title: 'Origin'),
-            icon: 
-                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-          );
-Marker _destination=Marker(
-          markerId: const MarkerId('destination'),
-            infoWindow: const InfoWindow(title: 'Destination'),
-            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-            );
-            */
-
-//  @override
-//  void dispose() {
-//   _googleMapController.dispose();
-//   super.dispose();
-//  }
-
 void setInitialLocation() {
     currentLocation = LatLng(
-      SOURCE_LOCATION.latitude,
-      SOURCE_LOCATION.longitude
+      source_location.latitude,
+      source_location.longitude
     );
 
     destinationLocation = LatLng(
-      DEST_LOCATION.latitude,
-      DEST_LOCATION.longitude
+      dest_location.latitude,
+      dest_location.longitude
     );
   }
 
@@ -177,16 +145,7 @@ void setInitialLocation() {
         onLongPress: _addMarker,
         */
       ),
-      /*
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.black,
-        onPressed: () => _googleMapController.animateCamera(
-          CameraUpdate.newCameraPosition(_initialCameraPosition),
-        ),
-        child: const Icon(Icons.center_focus_strong),
-      ),
-      */
+     
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           Position position = await _determinePosition();
@@ -223,12 +182,12 @@ void setInitialLocation() {
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       "<AIzaSyDGIlvQGO-4WnHB_t7FgHG5atjI0WiyqxA>",
       PointLatLng(
-        currentLocation.latitude,
-        currentLocation.longitude
+        source_location.latitude,
+        source_location.longitude
       ),
       PointLatLng(
-        destinationLocation.latitude,
-        destinationLocation.longitude
+        dest_location.latitude,
+        dest_location.longitude
       )
     );
 
@@ -237,18 +196,10 @@ void setInitialLocation() {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       });
 
-      setState(() {
-        _polylines.add(
-          Polyline(
-            width: 10,
-            polylineId: PolylineId('polyLine'),
-            color: Color(0xFF08A5CB),
-            points: polylineCoordinates
-          )
-        );
-      });
+      
     }
     }
+    
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
