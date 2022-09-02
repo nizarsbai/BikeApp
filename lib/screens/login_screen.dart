@@ -185,6 +185,18 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         )
                       ]),
+                      GestureDetector(
+                        
+                          onTap: () {
+                            nextScreen(context, const ForgotPasswordScreen());
+                          },
+                          child: const Text(
+                            "Mot de passe oublié?",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15, height: 2),
+                          ),
+                        ),
+                      
                   const SizedBox(height: 15),
                   const Text("OU",
                       textAlign: TextAlign.center,

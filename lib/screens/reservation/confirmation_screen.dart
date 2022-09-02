@@ -25,7 +25,7 @@ class ConfirmationScreen extends StatelessWidget {
                   nextScreen(context, const principal());
                 },
                 child: const Text(
-                  "Retourner à la page d'acceuil",
+                  "Retourner à la page d'accueil",
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                 )),
           ],
