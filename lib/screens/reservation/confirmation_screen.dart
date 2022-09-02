@@ -11,11 +11,16 @@ class ConfirmationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: app_bar(context, "Réservation Complète"),
+      
       body: Center(
+        
         child: Column(
+          
           children: [
+            SizedBox(height: 15),
             const Text(
-                "Votre réservation est complète. Vous pouvez maintenant récupérer votre vélo"),
+                "Votre réservation est complète. Vous pouvez maintenant récupérer votre vélo", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
+                const Text("  "),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
