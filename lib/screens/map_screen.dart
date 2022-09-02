@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'package:auth_bikeapp/screens/reservation/station_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../utils/next_screen.dart';
 
 
 const LatLng source_location = LatLng(33.599192545109936, -7.664233691337921);
@@ -36,46 +39,42 @@ class _MapScreenState extends State<MapScreen> {
   }
   
   intilize() {
-    Marker firstMarker=Marker(
-            markerId: MarkerId('Station Maarif'),
-            position: LatLng(33.56806300637081, -7.628466552353953),
-            infoWindow: const InfoWindow(title: 'Station Maarif'),
-            icon: 
-                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-          );
-    Marker secondMarker=Marker(
-            markerId: MarkerId('Station Mosquée Hassan-II'),
-            position: LatLng(33.60950735526005, -7.633051170093907),
-            infoWindow: const InfoWindow(title: 'Station Mosquée Hassan-II'),
-            icon: 
-                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-          );
-          Marker thirdMarker=Marker(
-            markerId: MarkerId('Station Place des Nations Unies'),
-            position: LatLng(33.595194912570044, -7.618696588039488),
-            infoWindow: const InfoWindow(title: 'Station Place des Nations Unies'),
-            icon: 
-                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-          );
-          Marker forthMarker=Marker(
-            markerId: MarkerId('Station Morocco Mall'),
-            position: LatLng(33.57691956355926, -7.707088013896289),
-            infoWindow: const InfoWindow(title: 'Station Morocco Mall'),
-            icon: 
-                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-          );
-          Marker fifthMarker=Marker(
-            markerId: MarkerId('Station Anfa Place'),
-            position: LatLng(33.599192545109936, -7.664233691337921),
-            infoWindow: const InfoWindow(title: 'Station Anfa Place'),
-            icon: 
-                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-          );
-      markers.add(firstMarker);
-      markers.add(secondMarker);
-      markers.add(thirdMarker);
-      markers.add(forthMarker);
-      markers.add(fifthMarker);
+     Marker firstMarker = Marker(
+      markerId: const MarkerId('Station Maarif'),
+      position: const LatLng(33.56806300637081, -7.628466552353953),
+      infoWindow: const InfoWindow(title: 'Station Maarif'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+    );
+    Marker secondMarker = Marker(
+      markerId: const MarkerId('Station Mosquée Hassan-II'),
+      position: const LatLng(33.60950735526005, -7.633051170093907),
+      infoWindow: const InfoWindow(title: 'Station Mosquée Hassan-II'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+    );
+    Marker thirdMarker = Marker(
+      markerId: const MarkerId('Station Place des Nations Unies'),
+      position: const LatLng(33.595194912570044, -7.618696588039488),
+      infoWindow: const InfoWindow(title: 'Station Place des Nations Unies'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+      onTap: () => nextScreen(context, StationScreen()),
+    );
+    Marker forthMarker = Marker(
+      markerId: const MarkerId('Station Morocco Mall'),
+      position: const LatLng(33.57691956355926, -7.707088013896289),
+      infoWindow: const InfoWindow(title: 'Station Morocco Mall'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+    );
+    Marker fifthMarker = Marker(
+      markerId: const MarkerId('Station Anfa Place'),
+      position: const LatLng(33.599192545109936, -7.664233691337921),
+      infoWindow: const InfoWindow(title: 'Station Anfa Place'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+    );
+    markers.add(firstMarker);
+    markers.add(secondMarker);
+    markers.add(thirdMarker);
+    markers.add(forthMarker);
+    markers.add(fifthMarker);
 
 
       // _polylines.add(
