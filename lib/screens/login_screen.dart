@@ -90,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
         controller: passwordController,
         obscureText: _obscureText,
         validator: (value) {
-          RegExp regex = new RegExp(r'^.{6,}$');
+          RegExp regex = new RegExp(r'^.{}6,$');
           if (value!.isEmpty) {
             return ("Mot de passe est obligatoire !");
           }

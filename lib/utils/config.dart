@@ -10,7 +10,7 @@ class Config {
   static final darkTheme = ThemeData(
     //backgroundColor: Color(0xff212E52),
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: const Color(0xff212E52),
+    scaffoldBackgroundColor: Color(0xFF212E52),
     primaryColor: Colors.black,
     // colorScheme: ColorScheme.fromSeed(
     //     seedColor: Color.fromARGB(255, 8, 34, 50), brightness: Brightness.dark),
