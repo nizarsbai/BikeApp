@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final sp = context.read<SignInProvider>();
     super.initState();
     // create a timer of 2 seconds
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 0), () {
       sp.isSignedIn == false
           ? nextScreenReplace(context, const LoginScreen())
           : nextScreenReplace(context, const principal());

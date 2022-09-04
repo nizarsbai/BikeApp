@@ -1,5 +1,6 @@
 import 'package:auth_bikeapp/provider/internet_provider.dart';
 import 'package:auth_bikeapp/provider/sign_in_provider.dart';
+import 'package:auth_bikeapp/screens/principal.dart';
 // import 'package:auth_bikeapp/screens/login_screen.dart';
 import 'package:auth_bikeapp/screens/splash_screen.dart';
 import 'package:auth_bikeapp/utils/config.dart';
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
             themeMode: themeProvider.themeMode,
             theme: Config.lightTheme,
             darkTheme: Config.darkTheme,
-            home: const SplashScreen(),
+            home: const principal(),
             debugShowCheckedModeBanner: false,
           );
         }
