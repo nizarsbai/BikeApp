@@ -1,5 +1,6 @@
 import 'package:auth_bikeapp/provider/internet_provider.dart';
 import 'package:auth_bikeapp/provider/sign_in_provider.dart';
+import 'package:auth_bikeapp/screens/login_screen.dart';
 import 'package:auth_bikeapp/screens/principal.dart';
 // import 'package:auth_bikeapp/screens/login_screen.dart';
 import 'package:auth_bikeapp/screens/splash_screen.dart';
@@ -7,6 +8,8 @@ import 'package:auth_bikeapp/utils/config.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'utils/next_screen.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +23,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    
     // return MaterialApp(
     //   title: 'BikeApp : Bike Rental',
     //   theme: ThemeData(
@@ -47,7 +51,7 @@ class MyApp extends StatelessWidget {
             themeMode: themeProvider.themeMode,
             theme: Config.lightTheme,
             darkTheme: Config.darkTheme,
-            home: const principal(),
+            home: const SplashScreen(),
             debugShowCheckedModeBanner: false,
           );
         }
