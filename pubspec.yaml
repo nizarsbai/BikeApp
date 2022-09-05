@@ -34,6 +34,7 @@ dependencies:
   cloud_firestore: ^3.4.1
   connectivity_plus: ^2.3.6
   cupertino_icons: ^1.0.2
+  custom_info_window: ^1.0.1
   dio: ^4.0.6
   email_validator: ^2.1.17
   firebase_auth: ^3.5.1

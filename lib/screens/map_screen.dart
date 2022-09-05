@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:auth_bikeapp/screens/reservation/station_screen.dart';
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
@@ -20,6 +21,7 @@ class MapScreen extends StatefulWidget {
 
 
 class _MapScreenState extends State<MapScreen> {
+  CustomInfoWindowController _customInfoWindowController = CustomInfoWindowController();
   final Set<Polyline> _polylines = {};
   List<LatLng> polylineCoordinates = [];
   late PolylinePoints polylinePoints;
@@ -68,6 +70,14 @@ class _MapScreenState extends State<MapScreen> {
       markerId: const MarkerId('Station Anfa Place'),
       position: const LatLng(33.599192545109936, -7.664233691337921),
       infoWindow: const InfoWindow(title: 'Station Anfa Place'),
+      onTap: (){
+        // _customInfoWindowController.addInfoWindow!(
+        //   Container(
+        //     height: 300,
+        //     width: 200,
+        //     decoration: BoxDecoration(backgroundBlendMode: ),
+        //   )
+      },
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
     );
     markers.add(firstMarker);
@@ -119,8 +129,9 @@ void setInitialLocation() {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      body: GoogleMap(
-        
+      body: Stack(
+        children: [
+         GoogleMap(
         myLocationButtonEnabled: true,
         zoomControlsEnabled: true,
         compassEnabled: false,
@@ -131,6 +142,7 @@ void setInitialLocation() {
           //_controller.complete(controller);
           googleMapController = controller;
           setPolylines();
+          _customInfoWindowController.googleMapController=controller;
 
         },
 
@@ -143,37 +155,38 @@ void setInitialLocation() {
 
         onLongPress: _addMarker,
         */
+        
       ),
+      
+       CustomInfoWindow(
+      controller: _customInfoWindowController,
+      height: 200,
+      width: 300,
+      offset: 35,
+      ),
+      
+      
+      
+      
+      
      
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          Position position = await _determinePosition();
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () async {
+      //     Position position = await _determinePosition();
 
-          googleMapController
-              .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(position.latitude, position.longitude), zoom: 14)));
+      //     googleMapController
+      //         .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(position.latitude, position.longitude), zoom: 14)));
 
 
-          markers.clear();
+      //     markers.clear();
 
-          markers.add(Marker(markerId: const MarkerId('Votre Position'),position: LatLng(position.latitude, position.longitude)));
+      //     markers.add(Marker(markerId: const MarkerId('Votre Position'),position: LatLng(position.latitude, position.longitude)));
 
-          
-
-        //   setState(() {
-        //      _polylines.add(
-        //     Polyline(
-        //     width: 10,
-        //     polylineId: PolylineId('polyLine'),
-        //     color: Color(0xFF08A5CB),
-        //     points: polylineCoordinates
-        //   )
-        // );
-        //   });
-          }, 
-          label:const Text("Ma Position"),
-          icon: const Icon(Icons.location_history),
-    ),
-    
+      //     }, 
+      //     label:const Text("Ma Position"),
+      //     icon: const Icon(Icons.location_history),
+        ],
+      ),
     );
   }
   
