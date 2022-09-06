@@ -3,7 +3,7 @@ description: Login and Registration
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -37,12 +37,14 @@ dependencies:
   custom_info_window: ^1.0.1
   dio: ^4.0.6
   email_validator: ^2.1.17
+  equatable: ^2.0.5
   firebase_auth: ^3.5.1
   firebase_core: ^1.20.0
   firebase_storage: ^10.3.7
   firebase_storage_web: ^3.3.5
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.1
   flutter_facebook_auth: ^4.4.0+1
   flutter_launcher_icons: ^0.10.0
   flutter_polyline_points: ^1.0.0
@@ -50,6 +52,7 @@ dependencies:
   flutter_svg: ^1.1.4
   fluttertoast: ^8.0.9
   font_awesome_flutter: ^9.0.0
+  geocoding: ^2.0.5
   geolocator: ^9.0.1
   google_maps_flutter: ^2.1.10
   google_sign_in: ^5.4.0
@@ -75,7 +78,6 @@ flutter_icons:
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
