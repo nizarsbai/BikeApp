@@ -17,7 +17,14 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       backgroundColor: Colors.grey[100],
       drawer: NavBar(),
       appBar: app_bar(context, "Notifications"),
-      body: Center(child: Text("Notifications")),
+      body: const Text("Aucune Notification", style: TextStyle(
+                      fontSize: 18,
+                      height: 2,
+                      //fontWeight: FontWeight.bold,
+                      color: Colors.black
+                    ),),
+                  
+      
     );
   }
 }

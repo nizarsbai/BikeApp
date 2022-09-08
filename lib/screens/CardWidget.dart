@@ -14,7 +14,7 @@ class CardWidget extends StatelessWidget {
     bool _darkMode =
         Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: StreamBuilder(
         stream: readBikes(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
