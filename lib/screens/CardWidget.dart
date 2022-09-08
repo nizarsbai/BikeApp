@@ -41,7 +41,7 @@ class CardWidget extends StatelessWidget {
                           ? Theme.of(context).primaryIconTheme.color
                           : Colors.white,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30)),
+                          borderRadius: BorderRadius.circular(10)),
                       child: Column(
                         children: [
                           const SizedBox(
@@ -51,7 +51,7 @@ class CardWidget extends StatelessWidget {
                             tag: bikes[index]['bid'],
                             child: Image.network(
                               bikes[index]['image'],
-                              width: 150,
+                              width: 160,
                               height: 110,
                               fit: BoxFit.scaleDown,
                             ),
