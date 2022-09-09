@@ -139,21 +139,21 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     return Scaffold(
-       appBar: AppBar(
-        title: const Text("Bike App"),
-        centerTitle: true,
-        actions: [
-          IconButton(onPressed: () async {
-            QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("bikes").get();
-            var list = querySnapshot.docs;
-            for(int i=0; i<list.length; i++) {
-              await FirebaseFirestore.instance.collection("bikes").doc(list[i].id).update({
-                'favoris': []
-              });
-            }
-          }, icon: const Icon(Icons.add))
-        ],
-      ),
+      //  appBar: AppBar(
+      //   title: const Text("Bike App"),
+      //   centerTitle: true,
+      //   actions: [
+      //     IconButton(onPressed: () async {
+      //       QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("bikes").get();
+      //       var list = querySnapshot.docs;
+      //       for(int i=0; i<list.length; i++) {
+      //         await FirebaseFirestore.instance.collection("bikes").doc(list[i].id).update({
+      //           'favoris': []
+      //         });
+      //       }
+      //     }, icon: const Icon(Icons.add))
+      //   ],
+      // ),
       body: SingleChildScrollView(
         child: Container(
           color: Theme.of(context).scaffoldBackgroundColor,
