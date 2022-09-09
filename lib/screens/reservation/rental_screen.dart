@@ -3,6 +3,7 @@ import 'package:auth_bikeapp/model/reservation_model.dart';
 import 'package:auth_bikeapp/screens/reservation/confirmation_screen.dart';
 import 'package:auth_bikeapp/utils/config.dart';
 import 'package:auth_bikeapp/utils/next_screen.dart';
+import 'package:auth_bikeapp/utils/snack_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class RentalScreen extends StatefulWidget {
 }
 
 class _RentalScreenState extends State<RentalScreen> {
+  TextEditingController numberOfHoursController = TextEditingController();
   String? starting;
   String? destination;
   DateTime date = DateTime.now();
@@ -170,17 +172,38 @@ class _RentalScreenState extends State<RentalScreen> {
                   width: 20,
                 ),
                 Container(
-                    alignment: Alignment.centerRight,
-                    width: MediaQuery.of(context).size.width / 2 - 20,
-                    height: 40,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                    child: Text(
-                      duration,
-                      style: const TextStyle(
-                        fontSize: 18,
-                      ),
-                    )),
+                  alignment: Alignment.centerRight,
+                  width: 120,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 0
+                  ),
+                  child: TextField(
+                    controller: numberOfHoursController,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      hintText: "Hours",
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)
+                      )
+                    ),
+                    onChanged: (value) {
+                      if(value != "") {
+                        setState(() {
+                          price = double.parse(value) * 15;
+                        });
+                      } else {
+                        setState(() {
+                          price = 0.0;
+                        });
+                      }
+                    },
+                  ),
+                ),
+            
               ],
             ),
             Row(
@@ -214,6 +237,10 @@ class _RentalScreenState extends State<RentalScreen> {
                     height: 40,
                     child: ElevatedButton(
                       onPressed: () async {
+                        if(destination==null)
+                        {
+                         openSnackbar(context,"Veuillez choisir une destination", Colors.red); 
+                        }
                         setState(() {
                           starting = widget.bike.currentStation!;
                           reserve = true;
@@ -222,15 +249,20 @@ class _RentalScreenState extends State<RentalScreen> {
                         final reservationRef = FirebaseFirestore.instance
                             .collection('reservations')
                             .doc();
+                            
+                      final snap = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
+                      final userName = snap.data()!['name'];
 
+                      //print(userName);
                         Reservation reservation = Reservation(
                           id: reservationRef.id,
                           idUser: FirebaseAuth.instance.currentUser!.uid,
                           starting: starting!,
                           destination: destination!,
+                          userName: userName!,
                           date: DateTime(date.year, date.month, date.day,
                               time.hour, time.minute),
-                          duration: duration,
+                          duration: double.parse(numberOfHoursController.text.trim()),
                           price: price,
                         );
 

@@ -1,3 +1,4 @@
+import 'package:auth_bikeapp/screens/admin/all_reservations.dart';
 import 'package:auth_bikeapp/screens/profile/editprofile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:auth_bikeapp/model/user_model.dart';
@@ -74,9 +75,9 @@ class _NavBarState extends State<NavBar> {
             onTap: () => null,
           ),
           ListTile(
-            leading: Icon(Icons.person),
-            title: Text('Friends'),
-            onTap: () => null,
+            leading: Icon(Icons.restore),
+            title: Text('Mes Reservations'),
+            onTap: () => nextScreen(context,AllReservationsScreen()),
           ),
           ListTile(
             leading: Icon(Icons.share),
