@@ -2,6 +2,8 @@ import 'package:auth_bikeapp/model/bike_model.dart';
 import 'package:auth_bikeapp/screens/reservation/rental_screen.dart';
 import 'package:auth_bikeapp/utils/config.dart';
 import 'package:auth_bikeapp/utils/next_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // import 'package:login_system/screens/location.dart';
@@ -15,6 +17,23 @@ class BikeDetailsScreen extends StatefulWidget {
 }
 
 class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
+
+var color = Colors.grey;
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.bike.favoris!.contains(FirebaseAuth.instance.currentUser!.uid)) {
+      setState(() {
+        color = Colors.amber;
+      });
+    } else {
+      setState(() {
+        color = Colors.grey;
+      }); 
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     bool _darkMode =
@@ -146,8 +165,27 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                         ? Theme.of(context).scaffoldBackgroundColor
                         : kTextColor,
                   ),
-                  onPressed: () {},
-                  child: const Icon(Icons.favorite),
+                  onPressed: ()async {
+                    var favoris = widget.bike.favoris;
+                          if(widget.bike.favoris!.contains(FirebaseAuth.instance.currentUser!.uid)) {
+                            favoris!.remove(FirebaseAuth.instance.currentUser!.uid);
+                            await FirebaseFirestore.instance.collection('bikes').doc(widget.bike.bid).update({
+                              'favoris': favoris
+                            });
+                            setState(() {
+                              color = Colors.grey;
+                            });
+                          } else {
+                            favoris!.add(FirebaseAuth.instance.currentUser!.uid);
+                            await FirebaseFirestore.instance.collection('bikes').doc(widget.bike.bid).update({
+                              'favoris': favoris
+                            });
+                            setState(() {
+                              color = Colors.amber;
+                            }); 
+                          }
+                  },
+                  child:  Icon(Icons.favorite, color: color,),
                 ),
               ),
             ),

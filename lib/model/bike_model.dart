@@ -7,6 +7,7 @@ class BikeModel {
   String? model;
   int? speed;
   String? description;
+  List? favoris;
   int? range;
   double? rating;
   String? image;
@@ -20,6 +21,7 @@ class BikeModel {
       this.model,
       this.speed,
       this.description,
+      this.favoris,
       this.range,
       this.rating,
       this.image,
@@ -34,6 +36,7 @@ class BikeModel {
       model: map['model'],
       speed: map['speed'],
       description: map['description'],
+      favoris: map['favoris'],
       range: map['range'],
       rating: map['rating'],
       image: map['image'],
@@ -50,6 +53,7 @@ class BikeModel {
       'model': model,
       'speed': speed,
       'description': description,
+      'favoris': favoris,
       'range': range,
       'rating': rating,
       'image':image,

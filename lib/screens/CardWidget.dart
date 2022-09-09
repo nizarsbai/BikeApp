@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CardWidget extends StatelessWidget {
-  const CardWidget({Key? key}) : super(key: key);
+  var stream;
+  CardWidget({Key? key, required this.stream}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class CardWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: StreamBuilder(
-        stream: readBikes(),
+        stream: stream,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
             return const Text("Something was wrong");
@@ -123,8 +124,3 @@ class CardWidget extends StatelessWidget {
     );
   }
 }
-
-Stream<List<Map<String, dynamic>>> readBikes() => FirebaseFirestore.instance
-    .collection('bikes')
-    .snapshots()
-    .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());

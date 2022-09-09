@@ -5,6 +5,7 @@ import 'package:auth_bikeapp/screens/principal.dart';
 import 'package:auth_bikeapp/screens/registration_screen.dart';
 import 'package:auth_bikeapp/screens/verifyemail_screen.dart';
 import 'package:auth_bikeapp/utils/next_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -138,6 +139,21 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     return Scaffold(
+       appBar: AppBar(
+        title: const Text("Bike App"),
+        centerTitle: true,
+        actions: [
+          IconButton(onPressed: () async {
+            QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("bikes").get();
+            var list = querySnapshot.docs;
+            for(int i=0; i<list.length; i++) {
+              await FirebaseFirestore.instance.collection("bikes").doc(list[i].id).update({
+                'favoris': []
+              });
+            }
+          }, icon: const Icon(Icons.add))
+        ],
+      ),
       body: SingleChildScrollView(
         child: Container(
           color: Theme.of(context).scaffoldBackgroundColor,

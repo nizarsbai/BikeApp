@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../utils/config.dart';
@@ -12,10 +14,17 @@ class veloCards extends StatefulWidget {
 
 class _veloCardsState extends State<veloCards> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+   Stream<List<Map<String, dynamic>>> readBikes() => FirebaseFirestore.instance.collection('bikes').snapshots().map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+
+  Stream<List<Map<String, dynamic>>> readFavorisBikes() => FirebaseFirestore.instance.collection('bikes').where('favoris', arrayContains: FirebaseAuth.instance.currentUser!.uid).snapshots().map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+
+  Stream<List<Map<String, dynamic>>> readElectricBikes() => FirebaseFirestore.instance.collection('bikes').where("type", isEqualTo: "electric").snapshots().map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+
+  Stream<List<Map<String, dynamic>>> readClassicBikes() => FirebaseFirestore.instance.collection('bikes').where("type", isEqualTo: "classic").snapshots().map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
 
    @override
   void initState(){
-    _tabController = new TabController(length: 3, vsync: this,initialIndex:0)..addListener(() {
+    _tabController = new TabController(length: 4, vsync: this,initialIndex:0)..addListener(() {
 
     });
   }
@@ -61,6 +70,7 @@ class _veloCardsState extends State<veloCards> with SingleTickerProviderStateMix
               unselectedLabelColor: _darkMode ? Colors.white : kNavyBlue,
               controller: _tabController,
               tabs: const [
+                Text('Tous', style: TextStyle(fontFamily: 'Varela_Round')),
                 Text('Favoris', style: TextStyle(fontFamily: 'Varela_Round')),
                 Text('Electrique',style: TextStyle(fontFamily: 'Varela_Round')),
                 Text('Classique',style: TextStyle(fontFamily: 'Varela_Round')),
@@ -71,10 +81,11 @@ class _veloCardsState extends State<veloCards> with SingleTickerProviderStateMix
           Expanded(
             child: TabBarView(
               controller: _tabController,
-                children: const [
-                  CardWidget(),
-                  CardWidget(),
-                  CardWidget(),
+                children: [
+                  CardWidget(stream: readBikes(),),
+                  CardWidget(stream: readFavorisBikes(),),
+                  CardWidget(stream: readElectricBikes(),),
+                  CardWidget(stream: readClassicBikes(),),
                 ]),
           )
         ],
