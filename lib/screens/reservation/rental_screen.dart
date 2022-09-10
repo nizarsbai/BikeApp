@@ -7,6 +7,7 @@ import 'package:auth_bikeapp/utils/snack_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RentalScreen extends StatefulWidget {
   BikeModel bike;
@@ -239,8 +240,15 @@ class _RentalScreenState extends State<RentalScreen> {
                       onPressed: () async {
                         if(destination==null)
                         {
-                         openSnackbar(context,"Veuillez choisir une destination", Colors.red); 
+                         Fluttertoast.showToast(msg: "Veuillez choisir une destination");
+                         return;
+                          //print(error.code);
                         }
+                        // if(duration==null)
+                        // {
+                        //   Fluttertoast.showToast(msg: "Veuillez choisir une durée");
+                        //  return;
+                        // }
                         setState(() {
                           starting = widget.bike.currentStation!;
                           reserve = true;
