@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:auth_bikeapp/provider/sign_in_provider.dart';
 import 'package:auth_bikeapp/screens/login_screen.dart';
 import 'package:auth_bikeapp/screens/principal.dart';
+import 'package:auth_bikeapp/utils/config.dart';
 import 'package:auth_bikeapp/utils/next_screen.dart';
 import 'package:auth_bikeapp/utils/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -43,6 +44,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
 
   @override
   @mustCallSuper
+  // ignore: must_call_super
   void dispose() {
     timer?.cancel();
   }
@@ -73,9 +75,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
       return const principal();
     } else {
       return Scaffold(
-        appBar: AppBar(
-          title: const Text("Vérifiez votre email !"),
-        ),
+        appBar: app_bar(context, "Vérifiez votre email !"),
         body: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -100,6 +100,20 @@ class _VerifyScreenState extends State<VerifyScreen> {
                     style: TextStyle(fontSize: 22),
                   ),
                   onPressed: canResendEmail ? sendVerificationEmail : null),
+              const SizedBox(height: 14),
+              TextButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50),
+                ),
+                child: const Text(
+                  "J'ai vérifié mon email",
+                  style: TextStyle(fontSize: 22),
+                ),
+                onPressed: () {
+                  sp.userSignOut();
+                  nextScreen(context, const LoginScreen());
+                },
+              ),
               const SizedBox(height: 14),
               TextButton(
                 style: ElevatedButton.styleFrom(

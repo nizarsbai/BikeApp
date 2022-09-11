@@ -54,7 +54,6 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     await user!.reload();
     if(user!.emailVerified) {
       timer!.cancel();
-      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const principal()));
     }
   }
