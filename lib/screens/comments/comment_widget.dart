@@ -1,7 +1,8 @@
 
 import 'package:auth_bikeapp/model/comment.dart';
-import 'package:auth_bikeapp/provider/theme_provider.dart';
+//import 'package:auth_bikeapp/provider/theme_provider.dart';
 import 'package:auth_bikeapp/screens/comments/comment_replies.dart';
+import 'package:auth_bikeapp/utils/config.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,9 @@ class CommentWidget extends StatefulWidget {
 class _CommentWidgetState extends State<CommentWidget> {
   @override
   Widget build(BuildContext context){
-    bool isDark = Provider.of<ThemeProvider>(context).isDarkMode;
+    bool isDark =
+        Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark;
+    //bool isDark = Provider.of<ThemeProvider>(context).isDarkMode;
     return Padding(
       padding: EdgeInsets.only(left: widget.left, right: 0),
       child: Column(
@@ -46,7 +49,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                 shape: BoxShape.circle,
                 image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: NetworkImage(widget.comment.userPhoto)
+                  image: NetworkImage(widget.comment.userPhoto!)
                 )
               ),
             ),
@@ -56,7 +59,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: isDark ? ThemeConfig.lightTheme.scaffoldBackgroundColor : ThemeConfig.darkTheme.scaffoldBackgroundColor,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     borderRadius: BorderRadius.circular(15)
                   ),
                   child: Column(
@@ -67,12 +70,12 @@ class _CommentWidgetState extends State<CommentWidget> {
                         padding: const EdgeInsets.only(bottom: 5),
                         child: textWidget(
                           widget.comment.userName,
-                          isDark ? ThemeConfig.darkTheme.primaryColor : ThemeConfig.lightTheme.primaryColor
+                          //isDark ? ThemeConfig.darkTheme.primaryColor : ThemeConfig.lightTheme.primaryColor
                         )
                       ),
                       textWidget(
                         widget.comment.comment, 
-                        isDark ? ThemeConfig.darkTheme.primaryColor : ThemeConfig.lightTheme.primaryColor
+                        //isDark ? ThemeConfig.darkTheme.primaryColor : ThemeConfig.lightTheme.primaryColor
                       ),
                     ],
                   )

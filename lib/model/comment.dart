@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Comment {
   final String id;
-  final String userId;
-  final String userName;
-  final String userPhoto;
+  final String? userId;
+  final String? userName;
+  final String? userPhoto;
   final String comment;
   final DateTime date;
   final int numberOfLikes;

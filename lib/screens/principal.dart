@@ -1,6 +1,8 @@
+import 'package:auth_bikeapp/model/comment.dart';
 import 'package:auth_bikeapp/model/user_model.dart';
 import 'package:auth_bikeapp/provider/sign_in_provider.dart';
 import 'package:auth_bikeapp/screens/admin/addbike_screen.dart';
+import 'package:auth_bikeapp/screens/comments/comments.dart';
 import 'package:auth_bikeapp/screens/home/notifications_screen.dart';
 import 'package:auth_bikeapp/screens/navbar.dart';
 import 'package:auth_bikeapp/screens/profile.dart';
@@ -47,7 +49,7 @@ class _principalState extends State<principal> with SingleTickerProviderStateMix
   final screens = [
     const veloCards(),
     const MapScreen(),
-    const Favorite(),
+    const CommentsScreen(),
     //const AddBikeScreen(),
     const Profile()
   ];
@@ -124,8 +126,8 @@ class _principalState extends State<principal> with SingleTickerProviderStateMix
             backgroundColor: Colors.orange
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite), 
-            label: "Favorite",
+            icon: Icon(Icons.comment), 
+            label: "Comments",
             backgroundColor: Colors.green
           ),
           BottomNavigationBarItem(
