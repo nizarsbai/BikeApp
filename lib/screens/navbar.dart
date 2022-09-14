@@ -1,4 +1,6 @@
 import 'package:auth_bikeapp/screens/admin/all_reservations.dart';
+import 'package:auth_bikeapp/screens/comments/comments.dart';
+import 'package:auth_bikeapp/screens/home/notifications_screen.dart';
 import 'package:auth_bikeapp/screens/profile/editprofile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:auth_bikeapp/model/user_model.dart';
@@ -69,25 +71,21 @@ class _NavBarState extends State<NavBar> {
               nextScreen(context, EditProfile());
             },
           ),
-          ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text('Favoris'),
-            onTap: () => null,
-          ),
+          
           ListTile(
             leading: Icon(Icons.restore),
             title: Text('Mes Reservations'),
             onTap: () => nextScreen(context,AllReservationsScreen()),
           ),
           ListTile(
-            leading: Icon(Icons.share),
-            title: Text('Share'),
-            onTap: () => null,
+            leading: Icon(Icons.comment),
+            title: Text('Commentaires'),
+            onTap: () => nextScreen(context, CommentsScreen()),
           ),
           ListTile(
             leading: Icon(Icons.notifications),
-            title: Text('Request'),
-            onTap: () => null,
+            title: Text('Notifications'),
+            onTap: () => nextScreen(context, NotificationsScreen()),
             trailing: ClipOval(
               child: Container(
                 color: Colors.red,
@@ -104,6 +102,11 @@ class _NavBarState extends State<NavBar> {
                 ),
               ),
             ),
+          ),
+          ListTile(
+            leading: Icon(Icons.favorite),
+            title: Text('Favoris'),
+            onTap: () => null,
           ),
           Divider(),
           ListTile(

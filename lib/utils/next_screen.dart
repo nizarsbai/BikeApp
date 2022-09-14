@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 void nextScreen(context, page) {
+  if(page==null)
+  {
+    return;
+  }
   Navigator.push(context, MaterialPageRoute(builder: (context) => page));
 }
 

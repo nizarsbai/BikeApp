@@ -1,10 +1,14 @@
+import 'package:auth_bikeapp/screens/auth/change_password.dart';
+import 'package:auth_bikeapp/screens/home/notifications_screen.dart';
 import 'package:auth_bikeapp/screens/profile/editprofile_screen.dart';
 import 'package:auth_bikeapp/utils/next_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../provider/sign_in_provider.dart';
 import '../../utils/config.dart';
+import '../login_screen.dart';
 
 class ParametresScreen extends StatefulWidget {
   @override
@@ -14,6 +18,7 @@ class ParametresScreen extends StatefulWidget {
 class _ParametresScreenState extends State<ParametresScreen> {
   @override
   Widget build(BuildContext context) {
+    final sp = context.watch<SignInProvider>();
     return Scaffold(
       appBar: app_bar(context, "Paramètres"),
       body: Container(
@@ -42,10 +47,11 @@ class _ParametresScreenState extends State<ParametresScreen> {
             SizedBox(
               height: 10,
             ),
-            buildAccountOptionRow(context, "Mes informations"),
-            buildAccountOptionRow(context, "Mot de passe"),
-            buildAccountOptionRow(context, "Notifications"),
-            buildAccountOptionRow(context, "Langue"),
+            
+            buildAccountOptionRow(context, "Mes informations", const EditProfile()),
+            buildAccountOptionRow(context, "Mot de passe", const ChangePasswordScreen()),
+            buildAccountOptionRow(context, "Notifications", const NotificationsScreen()),
+            buildAccountOptionRow(context, "Langue", null),
             SizedBox(
               height: 40,
             ),
@@ -113,9 +119,9 @@ class _ParametresScreenState extends State<ParametresScreen> {
               height: 10,
             ),
             // buildNotificationOptionRow("New for you", true),
-            buildAccountOptionRow(context, "J'ai besoin d'aide"),
+            buildAccountOptionRow(context, "J'ai besoin d'aide", null),
             buildAccountOptionRow(
-                context, "J'ai une question de confidentialité"),
+                context, "J'ai une question de confidentialité", null),
             SizedBox(
               height: 50,
             ),
@@ -144,7 +150,19 @@ class _ParametresScreenState extends State<ParametresScreen> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                 ),
-                onPressed: () {},
+
+                onPressed: () async {
+                final action = await AlertDialogs.yesCancelDialog(
+                    context, 'Se déconnecter', 'Êtes vous sûr ?');
+                if (action == DialogsAction.oui) {
+                  sp.userSignOut();
+                  nextScreenReplace(context, const LoginScreen());
+                  // setState(() => tappedYes = true);
+                } else {
+                  // setState(() => tappedYes = false);
+                }
+              },
+        
                 child: Text("SIGN OUT",
                     style: TextStyle(fontSize: 16, letterSpacing: 2.2)),
               ),
@@ -178,9 +196,11 @@ class _ParametresScreenState extends State<ParametresScreen> {
     );
   }
 
-  GestureDetector buildAccountOptionRow(BuildContext context, String title) {
+  GestureDetector buildAccountOptionRow(BuildContext context, String title, page) {
     return GestureDetector(
       onTap: () {
+        nextScreen(context, page);
+      },
         // nextScreen(context, page);
         // showDialog(
 
@@ -205,7 +225,7 @@ class _ParametresScreenState extends State<ParametresScreen> {
         //         ],
         //       );
         //     });
-      },
+      
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
