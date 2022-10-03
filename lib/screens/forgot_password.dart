@@ -1,4 +1,5 @@
 
+import 'package:auth_bikeapp/utils/config.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Reset Password"),
-        centerTitle: true,
-      ),
+      appBar: app_bar(context, "Reset Password")
+      ,
       body: Padding(
         padding: const EdgeInsets.all(32),
         child: Form(
